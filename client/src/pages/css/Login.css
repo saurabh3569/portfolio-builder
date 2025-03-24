@@ -1,0 +1,103 @@
+/* Login Page Styles */
+.login-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1a1a1a 0%, #252525 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+  }
+  
+  .login-card {
+    background: #2a2a2a;
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  .login-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #a855f7;
+    margin-bottom: 0.5rem;
+  }
+  
+  .login-subtitle {
+    font-size: 1rem;
+    color: #b0b0b0;
+    margin-bottom: 2rem;
+  }
+  
+  .login-label {
+    font-size: 0.9rem;
+    color: #e0e0e0;
+    margin-bottom: 0.5rem;
+    text-align: left;
+    display: block;
+  }
+  
+  .login-input {
+    background: #333333 !important;
+    border: none !important;
+    color: #e0e0e0 !important;
+    border-radius: 8px;
+    padding: 0.75rem;
+    font-size: 1rem;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .login-input:focus {
+    background: #3b3b3b !important;
+    box-shadow: 0 0 0 0.2rem rgba(168, 85, 247, 0.25) !important;
+  }
+  
+  .login-btn {
+    background: #a855f7 !important;
+    color: #fff !important;
+    padding: 0.75rem !important;
+    border-radius: 25px !important;
+    font-size: 1.1rem !important;
+    border: none !important;
+    transition: background 0.3s ease, transform 0.3s ease !important;
+  }
+  
+  .login-btn:hover {
+    background: #9333ea;
+    transform: translateY(-2px);
+  }
+  
+  .login-footer-text {
+    font-size: 0.9rem;
+    color: #b0b0b0;
+    margin: 0;
+  }
+  
+  .login-link {
+    color: #3b82f6;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .login-link:hover {
+    color: #2563eb;
+    text-decoration: underline;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 576px) {
+    .login-card {
+      padding: 2rem;
+      max-width: 90%;
+    }
+  
+    .login-title {
+      font-size: 1.75rem;
+    }
+  
+    .login-subtitle {
+      font-size: 0.9rem;
+    }
+  }
