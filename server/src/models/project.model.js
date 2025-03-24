@@ -16,5 +16,7 @@ const projectSchema = mongoose.Schema(
   { timestamps: true }
 );
 
+projectSchema.index({ portfolio: 1 });
+
 const Project = mongoose.model("Project", projectSchema);
 module.exports = Project;

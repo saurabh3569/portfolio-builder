@@ -19,6 +19,7 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-const User = model("User", userSchema);
+userSchema.index({ portfolio: 1 });
 
+const User = model("User", userSchema);
 module.exports = User;

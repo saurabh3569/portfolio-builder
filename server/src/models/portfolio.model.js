@@ -14,5 +14,7 @@ const portfolioSchema = mongoose.Schema(
   { timestamps: true }
 );
 
+portfolioSchema.index({ user: 1 });
+
 const Portfolio = mongoose.model("Portfolio", portfolioSchema);
 module.exports = Portfolio;

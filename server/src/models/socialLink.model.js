@@ -13,5 +13,7 @@ const socialLinkSchema = mongoose.Schema(
   { timestamps: true }
 );
 
+socialLinkSchema.index({ portfolio: 1 });
+
 const SocialLink = mongoose.model("SocialLink", socialLinkSchema);
 module.exports = SocialLink;

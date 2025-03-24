@@ -16,5 +16,7 @@ const educationSchema = mongoose.Schema(
   { timestamps: true }
 );
 
+educationSchema.index({ portfolio: 1 });
+
 const Education = mongoose.model("Education", educationSchema);
 module.exports = Education;

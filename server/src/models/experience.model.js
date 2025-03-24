@@ -17,5 +17,7 @@ const experienceSchema = mongoose.Schema(
   { timestamps: true }
 );
 
+experienceSchema.index({ portfolio: 1 });
+
 const Experience = mongoose.model("Experience", experienceSchema);
 module.exports = Experience;
