@@ -46,7 +46,7 @@ function Portfolio() {
         console.error(err);
         navigate("/404");
       });
-  }, [username]);
+  }, [username, navigate]);
 
   const handleContactSubmit = async (e) => {
     e.preventDefault();
