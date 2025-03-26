@@ -12,7 +12,7 @@ const register = async (req, res) => {
       .json({ message: "User with this email already exists" });
   }
 
-  if (await User.exists({ phone })) {
+  if (phone && (await User.exists({ phone }))) {
     return res
       .status(400)
       .json({ message: "User with this phone already exists" });
