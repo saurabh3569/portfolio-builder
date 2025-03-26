@@ -2,8 +2,8 @@ const Joi = require("joi");
 
 const updatePortfolio = {
   body: Joi.object({
-    summary: Joi.string().allow(null),
-    resume: Joi.string().allow(null),
+    summary: Joi.string().allow(""),
+    resume: Joi.string().allow(""),
   }),
 };
 
