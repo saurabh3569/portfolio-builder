@@ -19,14 +19,26 @@ api.interceptors.request.use((config) => {
 export const login = (email, password) =>
   api.post("/auth/login", { email, password });
 
-export const getPublicPortfolio = (username) =>
-  api.get(`/portfolio/${username}`);
+export const signup = (data) => api.post("/auth/register", data);
 
 /* -------------------------    Portfolio  ------------------------------- */
 
+export const getPublicPortfolio = (username) =>
+  api.get(`/portfolio/${username}`);
+
 export const getUserPortfolio = () => api.get(`/portfolio`);
 
-/* -------------------------    Contact  ------------------------------- */
+export const updatePortfolioVisibility = (data) =>
+  api.put(`/portfolio/visibility`, data);
+
+export const updatePortfolio = (data) => {
+  return api.put(`/portfolio`, {
+    summary: data.summary,
+    resume: data.resume,
+  });
+};
+
+/* -------------------------    User Profile  ------------------------------- */
 
 export const updateProfile = (data) => {
   return api.put(`/user`, {
@@ -41,15 +53,6 @@ export const updateProfile = (data) => {
 
 export const deleteProfile = () => {
   return api.delete(`/user`);
-};
-
-/* -------------------------    Portfolio  ------------------------------- */
-
-export const updatePortfolio = (data) => {
-  return api.put(`/portfolio`, {
-    summary: data.summary,
-    resume: data.resume,
-  });
 };
 
 /* -------------------------    Contact  ------------------------------- */

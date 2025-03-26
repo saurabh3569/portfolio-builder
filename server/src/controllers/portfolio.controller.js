@@ -10,7 +10,7 @@ const getPublicPortfolio = async (req, res) => {
     return res.status(404).json({ message: "User not found" });
   }
 
-  const portfolio = await Portfolio.findOne({ user: user._id })
+  const portfolio = await Portfolio.findOne({ user: user._id, isPublic: true })
     .populate("user")
     .populate("educations")
     .populate("experiences")
@@ -57,4 +57,27 @@ const updatePortfolio = async (req, res) => {
   res.send(portfolio);
 };
 
-module.exports = { getPublicPortfolio, getUserPortfolio, updatePortfolio };
+const updatePortfolioVisibility = async (req, res) => {
+  const userId = req.user._id; // From JWT
+
+  let portfolio = await Portfolio.findOne({ user: userId }).select(
+    "_id isPublic"
+  );
+
+  if (!portfolio) {
+    portfolio = await Portfolio.create({ user: userId, ...req.body });
+  }
+
+  portfolio.isPublic = req.body.isPublic;
+
+  await portfolio.save();
+
+  res.send(portfolio);
+};
+
+module.exports = {
+  getPublicPortfolio,
+  getUserPortfolio,
+  updatePortfolio,
+  updatePortfolioVisibility,
+};

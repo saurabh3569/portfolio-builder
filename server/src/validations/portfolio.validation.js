@@ -7,4 +7,10 @@ const updatePortfolio = {
   }),
 };
 
-module.exports = { updatePortfolio };
+const updatePortfolioVisibility = {
+  body: Joi.object({
+    isPublic: Joi.boolean().allow(null),
+  }),
+};
+
+module.exports = { updatePortfolio, updatePortfolioVisibility };

@@ -1,71 +1,121 @@
-/* No Portfolio Found Container */
-.no-portfolio-container {
-    background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: "Poppins", sans-serif;
-    padding: 20px;
-  }
-  
-  /* Content Wrapper */
-  .content-wrapper {
-    text-align: center;
-    padding: 2rem;
-    background: #252525;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    max-width: 500px;
-    width: 100%;
-  }
-  
-  /* Error Title */
+/* No Portfolio Wrapper */
+.no-portfolio-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Poppins", sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle Background Flair */
+.no-portfolio-wrapper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%);
+  z-index: 0;
+  opacity: 0.5;
+}
+
+/* Error Section */
+.error-section {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: #252525;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  max-width: 600px;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  border: 1px solid rgba(168, 85, 247, 0.2); /* Subtle purple border */
+}
+
+/* Error Title */
+.error-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: #a855f7;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 5px rgba(168, 85, 247, 0.5); /* Glow effect */
+}
+
+/* Error Message */
+.error-message {
+  font-size: 1.4rem;
+  color: #e0e0e0;
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+  font-weight: 300;
+  max-width: 450px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Back Button */
+.back-btn {
+  background: linear-gradient(90deg, #a855f7, #d946ef); /* Gradient match */
+  border: none;
+  border-radius: 50px;
+  padding: 1rem 3rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.back-btn:hover {
+  transform: scale(1.05); /* Slight zoom */
+  box-shadow: 0 5px 15px rgba(168, 85, 247, 0.6);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
   .error-title {
     font-size: 2.5rem;
-    font-weight: 600;
-    color: #a855f7;
-    margin-bottom: 1rem;
+    letter-spacing: 1px;
   }
-  
-  /* Error Message */
+
   .error-message {
     font-size: 1.2rem;
-    color: #b0b0b0;
-    margin-bottom: 2rem;
-    line-height: 1.5;
   }
-  
-  /* Back Button */
+
   .back-btn {
-    background: linear-gradient(90deg, #a855f7, #3b82f6);
-    border: none;
-    border-radius: 50px;
-    padding: 0.75rem 2rem;
+    padding: 0.9rem 2rem;
     font-size: 1rem;
-    font-weight: 600;
-    color: #fff;
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
-  
-  .back-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(168, 85, 247, 0.4);
+
+  .error-section {
+    padding: 2rem 1.5rem;
   }
-  
-  /* Responsive Adjustments */
-  @media (max-width: 576px) {
-    .error-title {
-      font-size: 2rem;
-    }
-  
-    .error-message {
-      font-size: 1rem;
-    }
-  
-    .back-btn {
-      padding: 0.6rem 1.5rem;
-      font-size: 0.9rem;
-    }
+}
+
+@media (max-width: 576px) {
+  .error-title {
+    font-size: 2rem;
   }
+
+  .error-message {
+    font-size: 1rem;
+  }
+
+  .back-btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  .error-section {
+    padding: 2rem 1rem;
+  }
+}

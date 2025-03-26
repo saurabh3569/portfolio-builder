@@ -1,9 +1,11 @@
+const { boolean } = require("joi");
 const mongoose = require("mongoose");
 
 const portfolioSchema = mongoose.Schema(
   {
     summary: { type: String },
     resume: { type: String },
+    isPublic: { type: Boolean, default: false },
     skills: [{ type: mongoose.Schema.Types.ObjectId, ref: "Skill" }],
     experiences: [{ type: mongoose.Schema.Types.ObjectId, ref: "Experience" }],
     educations: [{ type: mongoose.Schema.Types.ObjectId, ref: "Education" }],

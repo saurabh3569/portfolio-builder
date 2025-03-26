@@ -23,7 +23,16 @@ function Navbar({ user }) {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
       <div className="container">
-        <span className="navbar-brand">Admin Dashboard</span>
+        <img
+          src="/logo.jpg"
+          alt="Logo"
+          style={{
+            height: "40px",
+            width: "40px",
+            filter: "drop-shadow(0 4px 10px rgba(168, 85, 247, 0.3))",
+            cursor: "pointer",
+          }}
+        />
 
         {/* Toggler Button for Mobile */}
         <button

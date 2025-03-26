@@ -21,6 +21,7 @@ import {
   addEducation,
   updateEducation,
   deleteEducation,
+  updatePortfolioVisibility,
 } from "../services/api";
 import Navbar from "../components/admin/Navbar";
 import SectionSelector from "../components/admin/SectionSelector";
@@ -30,7 +31,7 @@ import ProjectsManager from "../components/admin/ProjectsManager";
 import SocialLinksManager from "../components/admin/SocialLinksManager";
 import ContactManager from "../components/admin/ContactManager";
 import ProfileManager from "../components/admin/ProfileManager";
-import EducationManager from "../components/admin/EducationManager"; // Added
+import EducationManager from "../components/admin/EducationManager";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import "./css/Admin.css";
@@ -76,6 +77,7 @@ function Admin() {
     description: "",
   });
   const [editingEducation, setEditingEducation] = useState(null);
+  const [profileVisibility, setProfileVisibility] = useState();
 
   const navigate = useNavigate();
 
@@ -99,6 +101,7 @@ function Admin() {
           summary: res.data.summary || "",
           resume: res.data.resume || "",
         });
+        setProfileVisibility(res.data.isPublic);
         setLoading(false);
       } catch (err) {
         setError("Failed to load portfolio. Please try again later.");
@@ -134,6 +137,21 @@ function Admin() {
   const refreshPortfolio = async () => {
     const res = await getUserPortfolio();
     setPortfolio(res.data);
+  };
+
+  // Toggle Public Visibility
+  const handleTogglePublic = async () => {
+    setProfileVisibility(!profileVisibility);
+    try {
+      const updatedPortfolio = {
+        ...portfolio,
+        isPublic: !profileVisibility, // Toggle the value
+      };
+      await updatePortfolioVisibility({ isPublic: updatedPortfolio.isPublic });
+    } catch (err) {
+      alert("Failed to update visibility. Please try again.");
+      console.error(err);
+    }
   };
 
   // Handle Skill Add
@@ -503,6 +521,29 @@ function Admin() {
           Admin Dashboard
         </h1>
 
+        {/* Toggle Public Button */}
+        <div className="text-center mb-4" data-aos="fade-up">
+          <label
+            className="form-check-label text-light me-3"
+            htmlFor="publicToggle"
+          >
+            Public Profile
+          </label>
+          <div className="custom-switch d-inline-block">
+            <input
+              type="checkbox"
+              className="custom-switch-input"
+              id="publicToggle"
+              checked={profileVisibility}
+              onChange={handleTogglePublic}
+            />
+            <label className="custom-switch-label" htmlFor="publicToggle">
+              <span className="custom-switch-text on-text">On</span>
+              <span className="custom-switch-text off-text">Off</span>
+            </label>
+          </div>
+        </div>
+
         {/* Section Selector */}
         <SectionSelector setActiveSection={setActiveSection} />
 
@@ -543,7 +584,7 @@ function Admin() {
             setEditingExperience={setEditingExperience}
           />
         )}
-        {activeSection === "educations" && ( // Added
+        {activeSection === "educations" && (
           <EducationManager
             educations={portfolio.educations}
             handleAddEducation={handleAddEducation}

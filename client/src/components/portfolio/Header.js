@@ -24,7 +24,11 @@ function Header() {
           <img
             src="/logo.jpg"
             alt="Logo"
-            style={{ height: "40px", width: "40px" }}
+            style={{
+              height: "40px",
+              width: "40px",
+              filter: "drop-shadow(0 4px 10px rgba(168, 85, 247, 0.3))",
+            }}
           />
         </Link>
 

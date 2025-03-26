@@ -3,7 +3,6 @@ const Joi = require("joi");
 const register = {
   body: Joi.object().keys({
     email: Joi.string().email().required(),
-    phone: Joi.string().required(),
     password: Joi.string().min(6).required(),
     name: Joi.string().required(),
     username: Joi.string()
@@ -11,7 +10,6 @@ const register = {
       .min(3)
       .max(30)
       .required(),
-    location: Joi.string().required(),
   }),
 };
 
