@@ -1,8 +1,18 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import "./css/Home.css";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
+  const navigate = useNavigate();
+
+  const handleLoginClick = () => {
+    navigate("/login");
+  };
+
+  const handleSignupClick = () => {
+    navigate("/signup");
+  };
+
   return (
     <div className="home-wrapper">
       <header className="hero-section">
@@ -20,12 +30,23 @@ function Home() {
           free!
         </p>
         <div className="hero-buttons" data-aos="fade-up" data-aos-delay="600">
-          <Link to="/signup" className="btn btn-primary me-3">
+          <button
+            className="back-btn btn-outline-light"
+            onClick={handleSignupClick}
+            data-aos="fade-up"
+            data-aos-delay="600"
+          >
             Get Started
-          </Link>
-          <Link to="/login" className="btn btn-outline-light">
+          </button>
+
+          <button
+            className="back-btn btn-outline-light"
+            onClick={handleLoginClick}
+            data-aos="fade-up"
+            data-aos-delay="600"
+          >
             Login
-          </Link>
+          </button>
         </div>
       </header>
     </div>
