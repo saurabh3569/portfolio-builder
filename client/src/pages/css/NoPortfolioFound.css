@@ -3,11 +3,13 @@
   min-height: 100vh;
   background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   font-family: "Poppins", sans-serif;
   position: relative;
   overflow: hidden;
+  padding: 2rem;
 }
 
 /* Subtle Background Flair */
@@ -23,42 +25,38 @@
   opacity: 0.5;
 }
 
-/* Error Section */
-.error-section {
-  text-align: center;
-  padding: 3rem 2rem;
-  background: #252525;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-  max-width: 600px;
-  width: 100%;
-  position: relative;
+/* Logo */
+.error-logo {
+  width: 150px; /* Adjust based on your logo size */
+  height: auto;
+  margin-bottom: 2rem;
+  filter: drop-shadow(0 4px 10px rgba(168, 85, 247, 0.3)); /* Purple shadow */
   z-index: 1;
-  border: 1px solid rgba(168, 85, 247, 0.2); /* Subtle purple border */
 }
 
 /* Error Title */
 .error-title {
-  font-size: 3.5rem;
+  font-size: 4.5rem;
   font-weight: 800;
   color: #a855f7;
   margin-bottom: 1.5rem;
-  line-height: 1.2;
+  line-height: 1.1;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   text-shadow: 0 2px 5px rgba(168, 85, 247, 0.5); /* Glow effect */
+  z-index: 1;
 }
 
 /* Error Message */
 .error-message {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   color: #e0e0e0;
-  margin-bottom: 2.5rem;
+  margin-bottom: 3rem;
   line-height: 1.6;
   font-weight: 300;
-  max-width: 450px;
-  margin-left: auto;
-  margin-right: auto;
+  max-width: 700px;
+  text-align: center;
+  z-index: 1;
 }
 
 /* Back Button */
@@ -73,6 +71,7 @@
   cursor: pointer;
   text-transform: uppercase;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  z-index: 1;
 }
 
 .back-btn:hover {
@@ -83,12 +82,12 @@
 /* Responsive Adjustments */
 @media (max-width: 768px) {
   .error-title {
-    font-size: 2.5rem;
-    letter-spacing: 1px;
+    font-size: 3.5rem;
+    letter-spacing: 2px;
   }
 
   .error-message {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
   }
 
   .back-btn {
@@ -96,18 +95,19 @@
     font-size: 1rem;
   }
 
-  .error-section {
-    padding: 2rem 1.5rem;
+  .error-logo {
+    width: 120px;
   }
 }
 
 @media (max-width: 576px) {
   .error-title {
-    font-size: 2rem;
+    font-size: 2.5rem;
+    letter-spacing: 1px;
   }
 
   .error-message {
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
 
   .back-btn {
@@ -115,7 +115,11 @@
     font-size: 0.9rem;
   }
 
-  .error-section {
-    padding: 2rem 1rem;
+  .error-logo {
+    width: 100px;
+  }
+
+  .no-portfolio-wrapper {
+    padding: 1.5rem;
   }
 }
