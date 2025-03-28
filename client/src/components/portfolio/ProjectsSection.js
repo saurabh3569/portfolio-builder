@@ -24,6 +24,29 @@ function ProjectsSection({ projects }) {
                   <p className="card-tech">
                     <small>Tech: {proj.technologies.join(", ")}</small>
                   </p>
+                  {/* Display links if they exist */}
+                  <div className="project-links mt-2">
+                    {proj.links?.live && (
+                      <a
+                        href={proj.links.live}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn-outline-primary btn-sm me-2"
+                      >
+                        Live Demo
+                      </a>
+                    )}
+                    {proj.links?.sourceCode && (
+                      <a
+                        href={proj.links.sourceCode}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn-outline-secondary btn-sm"
+                      >
+                        Source Code
+                      </a>
+                    )}
+                  </div>
                 </div>
               </div>
             ))

@@ -15,12 +15,23 @@ function ProjectsManager({
 
   const handleProjectChange = (e) => {
     const { name, value } = e.target;
-    setNewProject((prev) => ({ ...prev, [name]: value }));
+    console.log({ name, value });
+    setNewProject((prev) => ({
+      ...prev,
+      [name]: value,
+      links: { ...prev.links, [name]: value },
+    }));
   };
 
   const handleEditProjectChange = (e) => {
     const { name, value } = e.target;
-    setEditingProject((prev) => ({ ...prev, [name]: value }));
+    console.log({ name, value });
+
+    setEditingProject((prev) => ({
+      ...prev,
+      [name]: value,
+      links: { ...prev.links, [name]: value },
+    }));
   };
 
   const onEditProject = (proj) => {
@@ -110,6 +121,52 @@ function ProjectsManager({
                   required
                 />
               </div>
+              {/* Live Link Input */}
+              <div className="col-md-6 mb-3">
+                <label htmlFor="projLiveLink" className="form-label">
+                  Live Link
+                </label>
+                <input
+                  type="url"
+                  className="form-control"
+                  id="projLiveLink"
+                  name="live"
+                  value={
+                    editingProject
+                      ? editingProject.links?.live || ""
+                      : newProject.links?.live || ""
+                  }
+                  onChange={
+                    editingProject
+                      ? handleEditProjectChange
+                      : handleProjectChange
+                  }
+                  placeholder="e.g., https://yourproject.com"
+                />
+              </div>
+              {/* Source Code Link Input */}
+              <div className="col-md-6 mb-3">
+                <label htmlFor="projSourceCode" className="form-label">
+                  Source Code Link
+                </label>
+                <input
+                  type="url"
+                  className="form-control"
+                  id="projSourceCode"
+                  name="sourceCode"
+                  value={
+                    editingProject
+                      ? editingProject.links?.sourceCode || ""
+                      : newProject.links?.sourceCode || ""
+                  }
+                  onChange={
+                    editingProject
+                      ? handleEditProjectChange
+                      : handleProjectChange
+                  }
+                  placeholder="e.g., https://github.com/yourrepo"
+                />
+              </div>
             </div>
             <button type="submit" className="btn btn-success me-2">
               {editingProject ? "Update Project" : "Add Project"}
@@ -152,10 +209,33 @@ function ProjectsManager({
                     ))}
                   </p>
                 )}
-                <div className="action-buttons">
+                {/* Display Links */}
+                <div className="project-links">
+                  {proj.links?.live && (
+                    <a
+                      href={proj.links.live}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-outline-primary btn-sm me-2"
+                    >
+                      Live Demo
+                    </a>
+                  )}
+                  {proj.links?.sourceCode && (
+                    <a
+                      href={proj.links.sourceCode}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-outline-secondary btn-sm"
+                    >
+                      Source Code
+                    </a>
+                  )}
+                </div>
+                <div className="action-buttons mt-2">
                   <button
                     className="btn btn-primary btn-sm me-2"
-                    onClick={() => onEditProject(proj)} // Updated to use new handler
+                    onClick={() => onEditProject(proj)}
                   >
                     Edit
                   </button>

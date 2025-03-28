@@ -7,6 +7,7 @@ const projectSchema = mongoose.Schema(
     startDate: { type: Date },
     endDate: { type: Date },
     technologies: [{ type: String }],
+    links: { live: { type: String }, sourceCode: { type: String } },
     portfolio: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Portfolio",
