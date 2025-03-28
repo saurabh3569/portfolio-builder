@@ -5,7 +5,7 @@ const compression = require("compression");
 const morgan = require("morgan");
 const swaggerUi = require("swagger-ui-express");
 const routes = require("./routes/v1");
-const { errorConverter, errorHandler } = require("./middlewares/error");
+const { errorConverter, errorHandler } = require("./middlewares/errorHandler");
 const swaggerFile = require("./swagger/swagger-output.json");
 
 const app = express();

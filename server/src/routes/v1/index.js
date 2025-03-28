@@ -8,8 +8,22 @@ const skillRoute = require("./skill.route");
 const projectRoute = require("./project.route");
 const socialLinkRoute = require("./socialLink.route");
 const contactRoute = require("./contact.route");
+const { wrapRoutes } = require("../../utils/wrapRoutes");
 
 const router = express.Router();
+
+// Wrap all routes with centralized error handling
+[
+  authRoute,
+  userRoute,
+  portfolioRoute,
+  educationRoute,
+  experienceRoute,
+  skillRoute,
+  projectRoute,
+  socialLinkRoute,
+  contactRoute,
+].forEach(wrapRoutes);
 
 router.use("/auth", authRoute);
 router.use("/user", userRoute);
