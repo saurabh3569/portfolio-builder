@@ -55,6 +55,7 @@ function Admin() {
     name: "",
     description: "",
     technologies: "",
+    links: {},
   });
   const [newSocialLink, setNewSocialLink] = useState({ platform: "", url: "" });
   const [editingSkill, setEditingSkill] = useState(null);
@@ -279,7 +280,7 @@ function Admin() {
   // Handle Project Add
   const handleAddProject = async (e) => {
     e.preventDefault();
-    const { name, description, technologies } = newProject;
+    const { name, description, technologies, links } = newProject;
     if (!name || !description || !technologies) {
       alert("Please provide project name, description, and technologies.");
       return;
@@ -289,6 +290,7 @@ function Admin() {
         name,
         description,
         technologies: technologies.split(",").map((t) => t.trim()),
+        links,
       };
       await addProject(projectData);
       await refreshPortfolio();

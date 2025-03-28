@@ -7,15 +7,16 @@ const doc = {
   },
   host: "localhost:3000",
   schemes: ["http"],
-  tags: [
-    // { name: "Auth", description: "Authentication related APIs" },
-    // { name: "Portfolio", description: "APIs related to user portfolio" },
-    // { name: "Education", description: "APIs related to user education" },
-    // { name: "Experience", description: "APIs related to user work experience" },
-    // { name: "Skill", description: "APIs related to user skills" },
-    // { name: "Project", description: "APIs related to user projects" },
-    // { name: "Social Link", description: "APIs related to user social links" },
-  ],
+  securityDefinitions: {
+    BearerAuth: {
+      type: "apiKey",
+      in: "header",
+      name: "Authorization",
+      description:
+        "Enter your Bearer token in the format **Bearer &lt;token&gt;**",
+    },
+  },
+  security: [{ BearerAuth: [] }], // Apply BearerAuth globally
 };
 
 const outputFile = "./swagger-output.json";

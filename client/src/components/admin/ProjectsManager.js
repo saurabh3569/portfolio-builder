@@ -1,4 +1,4 @@
-import React, { useRef } from "react"; // Added useRef for scrolling
+import React, { useRef } from "react";
 
 function ProjectsManager({
   projects,
@@ -11,26 +11,29 @@ function ProjectsManager({
   editingProject,
   setEditingProject,
 }) {
-  const formRef = useRef(null); // Ref to the form container
+  const formRef = useRef(null);
 
   const handleProjectChange = (e) => {
     const { name, value } = e.target;
-    console.log({ name, value });
     setNewProject((prev) => ({
       ...prev,
       [name]: value,
-      links: { ...prev.links, [name]: value },
+      links: {
+        ...prev.links,
+        ...(name === "live" || name === "sourceCode" ? { [name]: value } : {}),
+      },
     }));
   };
 
   const handleEditProjectChange = (e) => {
     const { name, value } = e.target;
-    console.log({ name, value });
-
     setEditingProject((prev) => ({
       ...prev,
       [name]: value,
-      links: { ...prev.links, [name]: value },
+      links: {
+        ...prev.links,
+        ...(name === "live" || name === "sourceCode" ? { [name]: value } : {}),
+      },
     }));
   };
 
