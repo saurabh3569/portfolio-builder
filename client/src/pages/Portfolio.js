@@ -50,10 +50,14 @@ function Portfolio() {
 
   const handleContactSubmit = async (e) => {
     e.preventDefault();
-    await addContact({ ...contactForm, userId: portfolio.user._id });
-    setFormStatus("Message sent successfully!");
-    setContactForm({ name: "", email: "", message: "" });
-    setTimeout(() => setFormStatus(""), 3000);
+    try {
+      await addContact({ ...contactForm, userId: portfolio.user._id });
+      setFormStatus("Message sent successfully!");
+      setContactForm({ name: "", email: "", message: "" });
+      setTimeout(() => setFormStatus(""), 3000);
+    } catch (error) {
+      setFormStatus(error.response?.data?.message);
+    }
   };
 
   const handleInputChange = (e) => {
