@@ -1,0 +1,38 @@
+services:
+  server:
+    build: ./server
+    container_name: server
+    ports:
+      - "5000:5000"
+    environment:
+      - ./server/.env
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    depends_on:
+      - mongo
+
+  client:
+    build: ./client
+    container_name: client
+    ports:
+      - "3000:3000"
+    environment:
+      - ./client/.env
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    depends_on:
+      - server
+
+  mongo:
+    image: mongo:5.0
+    container_name: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
