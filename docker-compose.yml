@@ -1,11 +1,15 @@
+version: "3.8"
+
 services:
   server:
     build: ./server
     container_name: server
     ports:
       - "5000:5000"
-    environment:
+    env_file:  
       - ./server/.env
+    environment:
+      - DOCKER_ENV=true 
     volumes:
       - ./server:/app
       - /app/node_modules

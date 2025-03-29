@@ -1,14 +1,14 @@
-# Use official Node.js LTS image
-FROM node:18-alpine
+# Use official Node.js 20 LTS image
+FROM node:20-alpine
 
 # Set the working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
+# Copy package.json and yarn.lock
+COPY package.json yarn.lock ./
 
-# Install dependencies
-RUN npm install
+# Install dependencies using Yarn
+RUN yarn install --frozen-lockfile
 
 # Copy the rest of the application code
 COPY . .
@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 5000
 
 # Start the application
-CMD ["npm", "run", "start"]
+CMD ["yarn", "start"]

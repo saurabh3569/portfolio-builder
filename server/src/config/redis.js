@@ -2,6 +2,10 @@ const Redis = require("ioredis");
 
 let redis;
 
+const redisHost = process.env.DOCKER_ENV
+  ? process.env.REDIS_HOST_DOCKER
+  : process.env.REDIS_HOST;
+
 if (process.env.REDIS_URL) {
   //  Using Render Redis (Cloud)
   redis = new Redis(process.env.REDIS_URL, {
@@ -10,7 +14,7 @@ if (process.env.REDIS_URL) {
 } else {
   // Using Local Redis
   redis = new Redis({
-    host: process.env.REDIS_HOST,
+    host: redisHost,
     port: process.env.REDIS_PORT,
   });
 }
