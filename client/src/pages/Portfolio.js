@@ -50,7 +50,7 @@ function Portfolio() {
 
   const handleContactSubmit = async (e) => {
     e.preventDefault();
-    await addContact(contactForm);
+    await addContact({ ...contactForm, userId: portfolio.user._id });
     setFormStatus("Message sent successfully!");
     setContactForm({ name: "", email: "", message: "" });
     setTimeout(() => setFormStatus(""), 3000);

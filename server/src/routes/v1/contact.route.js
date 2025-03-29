@@ -15,7 +15,6 @@ router.get("/", auth(), contactController.listContact);
 // Create
 router.post(
   "/",
-  auth(),
   validate(contactValidation.createContact),
   contactController.createContact
 );

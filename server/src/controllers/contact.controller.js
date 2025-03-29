@@ -1,5 +1,6 @@
 const Contact = require("../models/contact.model");
 const Portfolio = require("../models/portfolio.model");
+const User = require("../models/user.model");
 
 const getContact = async (req, res) => {
   const contact = await Contact.findOne({
@@ -21,7 +22,13 @@ const listContact = async (req, res) => {
 };
 
 const createContact = async (req, res) => {
-  let contact = new Contact({ ...req.body, user: req.user._id });
+  const user = await User.exists({ _id: req.body.userId });
+
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  let contact = new Contact({ ...req.body, user: req.body.userId });
 
   await contact.save();
 
