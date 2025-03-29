@@ -82,8 +82,8 @@ function Portfolio() {
           capitalizeFirstLetter={capitalizeFirstLetter}
         />
         <ExperienceSection experiences={portfolio.experiences} />
-        <EducationSection educations={portfolio.educations} />
         <ProjectsSection projects={portfolio.projects} />
+        <EducationSection educations={portfolio.educations} />
         <ContactSection
           contactForm={contactForm}
           formStatus={formStatus}

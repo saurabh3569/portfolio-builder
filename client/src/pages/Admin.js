@@ -466,6 +466,12 @@ function Admin() {
     }
   };
 
+  // Handle Retry
+  const handleRetry = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
   // Contacts Handler
   const handleDeleteContact = async (messageId) => {
     try {
@@ -493,10 +499,7 @@ function Admin() {
         <div className="error-card">
           <h4 className="error-title">Oops! Something Went Wrong</h4>
           <p className="error-message">{error}</p>
-          <button
-            className="retry-btn"
-            onClick={() => window.location.reload()}
-          >
+          <button className="retry-btn" onClick={handleRetry}>
             Retry
           </button>
         </div>
@@ -514,6 +517,15 @@ function Admin() {
 
   return (
     <div className="portfolio-container">
+      {/* Work in Progress Note */}
+      <div className="wip-banner text-center p-3 mb-4">
+        <strong>🚧 Admin Panel Under Development 🚧</strong>
+        <p className="mb-0">
+          We are actively working on improvements, fixing bugs, and refining
+          state management.
+        </p>
+      </div>
+
       <Navbar user={portfolio.user} />
       <div className="container mt-5 pt-4">
         <h1
