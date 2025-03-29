@@ -15,6 +15,7 @@ This is a full-stack MERN (MongoDB, Express.js, React.js, Node.js) portfolio man
 - **REST API with JWT Authentication**
 - **Swagger API Documentation**
 - **Bootstrap for Styling**
+- **Rate Limiting:** Implemented using Redis to prevent abuse on the contact form
 
 ## Tech Stack
 
@@ -33,6 +34,7 @@ This is a full-stack MERN (MongoDB, Express.js, React.js, Node.js) portfolio man
 - Validation Middleware
 - Swagger API Documentation
 - Helmet, CORS, Compression for security and performance
+- **Redis for rate limiting**
 
 ## Installation
 
@@ -40,6 +42,7 @@ This is a full-stack MERN (MongoDB, Express.js, React.js, Node.js) portfolio man
 
 - Node.js installed
 - MongoDB installed and running
+- Redis installed and running
 
 ### Steps:
 
@@ -60,6 +63,8 @@ This is a full-stack MERN (MongoDB, Express.js, React.js, Node.js) portfolio man
    JWT_SECRET=your_jwt_secret
    JWT_ACCESS_EXPIRATION_MINUTES=300
    JWT_REFRESH_EXPIRATION_DAYS=30
+   REDIS_HOST=your_redis_host
+   REDIS_PORT=your_redis_port
    ```
 4. Start the backend server:
    ```sh
@@ -102,6 +107,7 @@ This is a full-stack MERN (MongoDB, Express.js, React.js, Node.js) portfolio man
    - Backend: `http://localhost:5000`
    - Frontend: `http://localhost:3000`
    - MongoDB: `mongodb://localhost:27017`
+   - Redis: `redis://localhost:6379`
 
 ## API Endpoints
 
@@ -114,6 +120,10 @@ This is a full-stack MERN (MongoDB, Express.js, React.js, Node.js) portfolio man
 - **Skills:** `/v1/skill`
 - **Social Links:** `/v1/social-link`
 - **Contact:** `/v1/contact`
+
+## Rate Limiting
+
+To prevent abuse, Redis-based rate limiting has been implemented for the contact form API (`/v1/contact`). If too many requests are made in a short period, additional requests will be temporarily blocked.
 
 ## Running in Production
 

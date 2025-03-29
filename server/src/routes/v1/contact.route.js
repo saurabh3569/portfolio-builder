@@ -3,6 +3,7 @@ const auth = require("../../middlewares/auth");
 const validate = require("../../middlewares/validate");
 const contactValidation = require("../../validations/contact.validation");
 const contactController = require("../../controllers/contact.controller");
+const rateLimiter = require("../../middlewares/rateLimiter");
 
 const router = express.Router();
 
@@ -15,6 +16,7 @@ router.get("/", auth(), contactController.listContact);
 // Create
 router.post(
   "/",
+  rateLimiter(3, 60), // can be send up to 3 request in every 60 second
   validate(contactValidation.createContact),
   contactController.createContact
 );
