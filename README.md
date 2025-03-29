@@ -55,7 +55,7 @@ This is a full-stack MERN (MongoDB, Express.js, React.js, Node.js) portfolio man
    ```
 3. Create a `.env` file in the server directory and add:
    ```sh
-   PORT=3000
+   PORT=5000
    MONGODB_URL=your_mongodb_connection_string
    JWT_SECRET=your_jwt_secret
    JWT_ACCESS_EXPIRATION_MINUTES=300
@@ -72,12 +72,36 @@ This is a full-stack MERN (MongoDB, Express.js, React.js, Node.js) portfolio man
    ```
 6. Create a `.env` file in the client directory and add:
    ```sh
-   REACT_APP_API_URL=http://localhost:3000/v1
+   REACT_APP_API_URL=http://localhost:5000/v1
    ```
 7. Start the frontend:
    ```sh
    npm start
    ```
+
+## Running with Docker
+
+### Prerequisites:
+
+- Docker installed
+- Docker Compose installed
+
+### Steps:
+
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/saurabh3569/portfolio.git
+   cd your-repo
+   ```
+2. Create `.env` files for both backend and frontend as described in the installation steps.
+3. Start the application using Docker Compose:
+   ```sh
+   docker-compose up --build
+   ```
+4. The application will be accessible at:
+   - Backend: `http://localhost:5000`
+   - Frontend: `http://localhost:3000`
+   - MongoDB: `mongodb://localhost:27017`
 
 ## API Endpoints
 
