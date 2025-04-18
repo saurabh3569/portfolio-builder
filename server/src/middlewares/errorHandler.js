@@ -1,11 +1,11 @@
-const httpStatus = require("http-status");
+const { status } = require("http-status");
 const ApiError = require("../utils/ApiError");
 
 const errorConverter = (err, req, res, next) => {
   let error = err;
   if (!(error instanceof ApiError)) {
     error = new ApiError(
-      httpStatus.INTERNAL_SERVER_ERROR,
+      status.INTERNAL_SERVER_ERROR,
       error.message || "Internal server error"
     );
   }

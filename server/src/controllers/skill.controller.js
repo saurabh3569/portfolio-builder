@@ -1,5 +1,7 @@
 const Skill = require("../models/skill.model");
 const Portfolio = require("../models/portfolio.model");
+const ApiError = require("../utils/ApiError");
+const { status } = require("http-status");
 
 const getSkill = async (req, res) => {
   const skill = await Skill.findOne({
@@ -8,7 +10,7 @@ const getSkill = async (req, res) => {
   });
 
   if (!skill) {
-    return res.status(404).json({ message: "Skill not found" });
+    throw new ApiError(status.NOT_FOUND, "Skill not found");
   }
 
   res.send(skill);
@@ -43,7 +45,7 @@ const updateSkill = async (req, res) => {
   });
 
   if (!skill) {
-    return res.status(404).json({ message: "Skill not found" });
+    throw new ApiError(status.NOT_FOUND, "Skill not found");
   }
 
   Object.assign(skill, req.body);
@@ -59,12 +61,12 @@ const deleteSkill = async (req, res) => {
   });
 
   if (!skill) {
-    return res.status(404).json({ message: "Skill not found" });
+    throw new ApiError(status.NOT_FOUND, "Skill not found");
   }
 
   await skill.deleteOne();
 
-  return skill;
+  res.send(skill);
 };
 
 module.exports = {

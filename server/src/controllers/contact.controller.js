@@ -1,6 +1,8 @@
 const Contact = require("../models/contact.model");
 const Portfolio = require("../models/portfolio.model");
 const User = require("../models/user.model");
+const ApiError = require("../utils/ApiError");
+const { status } = require("http-status");
 
 const getContact = async (req, res) => {
   const contact = await Contact.findOne({
@@ -9,7 +11,7 @@ const getContact = async (req, res) => {
   });
 
   if (!contact) {
-    return res.status(404).json({ message: "Contact not found" });
+    throw new ApiError(status.NOT_FOUND, "Contact not found");
   }
 
   res.send(contact);
@@ -25,7 +27,7 @@ const createContact = async (req, res) => {
   const user = await User.exists({ _id: req.body.userId });
 
   if (!user) {
-    return res.status(404).json({ message: "User not found" });
+    throw new ApiError(status.NOT_FOUND, "User not found");
   }
 
   let contact = new Contact({ ...req.body, user: req.body.userId });
@@ -50,7 +52,7 @@ const deleteContact = async (req, res) => {
   });
 
   if (!contact) {
-    return res.status(404).json({ message: "Contact not found" });
+    throw new ApiError(status.NOT_FOUND, "Contact not found");
   }
 
   await contact.deleteOne();

@@ -2,26 +2,31 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 const Portfolio = require("../models/portfolio.model");
+const ApiError = require("../utils/ApiError");
+const { status } = require("http-status");
 
 const register = async (req, res) => {
   const { email, phone, username } = req.body;
 
   if (await User.exists({ email })) {
-    return res
-      .status(400)
-      .json({ message: "User with this email already exists" });
+    throw new ApiError(
+      status.BAD_REQUEST,
+      "User with this email already exists"
+    );
   }
 
   if (phone && (await User.exists({ phone }))) {
-    return res
-      .status(400)
-      .json({ message: "User with this phone already exists" });
+    throw new ApiError(
+      status.BAD_REQUEST,
+      "User with this phone already exists"
+    );
   }
 
   if (await User.exists({ username })) {
-    return res
-      .status(400)
-      .json({ message: "User with this username already exists" });
+    throw new ApiError(
+      status.BAD_REQUEST,
+      "User with this username already exists"
+    );
   }
 
   req.body.password = await bcrypt.hash(req.body.password, 8);
@@ -49,7 +54,7 @@ const login = async (req, res) => {
   const user = await User.findOne({ email }).select("+password");
 
   if (!user || !(await bcrypt.compare(password, user.password))) {
-    return res.status(400).json({ message: "Invalid credentials" });
+    throw new ApiError(status.BAD_REQUEST, "Invalid credentials");
   }
   const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
     expiresIn: `${process.env.JWT_ACCESS_EXPIRATION_MINUTES}m`,

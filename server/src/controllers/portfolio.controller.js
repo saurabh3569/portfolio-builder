@@ -1,5 +1,7 @@
 const Portfolio = require("../models/portfolio.model");
 const User = require("../models/user.model");
+const ApiError = require("../utils/ApiError");
+const { status } = require("http-status");
 
 const getPublicPortfolio = async (req, res) => {
   const username = req.params.username;
@@ -7,7 +9,7 @@ const getPublicPortfolio = async (req, res) => {
   const user = await User.findOne({ username }).select("_id");
 
   if (!user) {
-    return res.status(404).json({ message: "User not found" });
+    throw new ApiError(status.NOT_FOUND, "User not found");
   }
 
   const portfolio = await Portfolio.findOne({ user: user._id, isPublic: true })
@@ -19,7 +21,7 @@ const getPublicPortfolio = async (req, res) => {
     .populate("socialLinks");
 
   if (!portfolio) {
-    return res.status(404).json({ message: "Portfolio not found" });
+    throw new ApiError(status.NOT_FOUND, "Portfolio not found");
   }
 
   res.send(portfolio);
@@ -37,14 +39,14 @@ const getUserPortfolio = async (req, res) => {
     .populate("socialLinks");
 
   if (!portfolio) {
-    return res.status(404).json({ message: "Portfolio not found" });
+    throw new ApiError(status.NOT_FOUND, "Portfolio not found");
   }
 
   res.send(portfolio);
 };
 
 const updatePortfolio = async (req, res) => {
-  const userId = req.user._id; // From JWT
+  const userId = req.user._id;
 
   let portfolio = await Portfolio.findOne({ user: userId });
 
@@ -58,7 +60,7 @@ const updatePortfolio = async (req, res) => {
 };
 
 const updatePortfolioVisibility = async (req, res) => {
-  const userId = req.user._id; // From JWT
+  const userId = req.user._id;
 
   let portfolio = await Portfolio.findOne({ user: userId }).select(
     "_id isPublic"
