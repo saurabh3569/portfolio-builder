@@ -1,4 +1,6 @@
 const redis = require("../config/redis");
+const ApiError = require("../utils/ApiError");
+const { status } = require("http-status");
 
 const rateLimiter = (limit, duration) => {
   return async (req, res, next) => {
@@ -13,15 +15,16 @@ const rateLimiter = (limit, duration) => {
       }
 
       if (requestCount > limit) {
-        return res
-          .status(429)
-          .json({ message: "Too many requests. Please try again later." });
+        throw new ApiError(
+          status.TOO_MANY_REQUESTS,
+          "Too many requests. Please try again later."
+        );
       }
 
       next();
     } catch (error) {
       console.error("Redis Error:", error);
-      return res.status(500).json({ message: "Internal Server Error" });
+      return next(error);
     }
   };
 };

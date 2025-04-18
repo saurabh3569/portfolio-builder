@@ -1,5 +1,7 @@
 const SocialLink = require("../models/socialLink.model");
 const Portfolio = require("../models/portfolio.model");
+const ApiError = require("../utils/ApiError");
+const { status } = require("http-status");
 
 const getSocialLink = async (req, res) => {
   const socialLink = await SocialLink.findOne({
@@ -8,7 +10,7 @@ const getSocialLink = async (req, res) => {
   });
 
   if (!socialLink) {
-    return res.status(404).json({ message: "SocialLink not found" });
+    throw new ApiError(status.NOT_FOUND, "SocialLink not found");
   }
 
   res.send(socialLink);
@@ -43,7 +45,7 @@ const updateSocialLink = async (req, res) => {
   });
 
   if (!socialLink) {
-    return res.status(404).json({ message: "SocialLink not found" });
+    throw new ApiError(status.NOT_FOUND, "SocialLink not found");
   }
 
   Object.assign(socialLink, req.body);
@@ -59,12 +61,12 @@ const deleteSocialLink = async (req, res) => {
   });
 
   if (!socialLink) {
-    return res.status(404).json({ message: "SocialLink not found" });
+    throw new ApiError(status.NOT_FOUND, "SocialLink not found");
   }
 
   await socialLink.deleteOne();
 
-  return socialLink;
+  res.send(socialLink);
 };
 
 module.exports = {

@@ -1,5 +1,7 @@
 const Project = require("../models/project.model");
 const Portfolio = require("../models/portfolio.model");
+const ApiError = require("../utils/ApiError");
+const { status } = require("http-status");
 
 const getProject = async (req, res) => {
   const project = await Project.findOne({
@@ -8,7 +10,7 @@ const getProject = async (req, res) => {
   });
 
   if (!project) {
-    return res.status(404).json({ message: "Project not found" });
+    throw new ApiError(status.NOT_FOUND, "Project not found");
   }
 
   res.send(project);
@@ -43,7 +45,7 @@ const updateProject = async (req, res) => {
   });
 
   if (!project) {
-    return res.status(404).json({ message: "Project not found" });
+    throw new ApiError(status.NOT_FOUND, "Project not found");
   }
 
   Object.assign(project, req.body);
@@ -59,12 +61,12 @@ const deleteProject = async (req, res) => {
   });
 
   if (!project) {
-    return res.status(404).json({ message: "Project not found" });
+    throw new ApiError(status.NOT_FOUND, "Project not found");
   }
 
   await project.deleteOne();
 
-  return project;
+  res.send(project);
 };
 
 module.exports = {

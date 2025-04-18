@@ -1,5 +1,7 @@
 const Education = require("../models/education.model");
 const Portfolio = require("../models/portfolio.model");
+const ApiError = require("../utils/ApiError");
+const { status } = require("http-status");
 
 const getEducation = async (req, res) => {
   const education = await Education.findOne({
@@ -8,7 +10,7 @@ const getEducation = async (req, res) => {
   });
 
   if (!education) {
-    return res.status(404).json({ message: "Education not found" });
+    throw new ApiError(status.NOT_FOUND, "Education not found");
   }
 
   res.send(education);
@@ -43,7 +45,7 @@ const updateEducation = async (req, res) => {
   });
 
   if (!education) {
-    return res.status(404).json({ message: "Education not found" });
+    throw new ApiError(status.NOT_FOUND, "Education not found");
   }
 
   Object.assign(education, req.body);
@@ -59,7 +61,7 @@ const deleteEducation = async (req, res) => {
   });
 
   if (!education) {
-    return res.status(404).json({ message: "Education not found" });
+    throw new ApiError(status.NOT_FOUND, "Education not found");
   }
 
   await education.deleteOne();

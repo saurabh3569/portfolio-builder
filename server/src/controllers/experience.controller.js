@@ -1,5 +1,7 @@
 const Experience = require("../models/experience.model");
 const Portfolio = require("../models/portfolio.model");
+const ApiError = require("../utils/ApiError");
+const { status } = require("http-status");
 
 const getExperience = async (req, res) => {
   const experience = await Experience.findOne({
@@ -8,7 +10,7 @@ const getExperience = async (req, res) => {
   });
 
   if (!experience) {
-    return res.status(404).json({ message: "Experience not found" });
+    throw new ApiError(status.NOT_FOUND, "Experience not found");
   }
 
   res.send(experience);
@@ -43,7 +45,7 @@ const updateExperience = async (req, res) => {
   });
 
   if (!experience) {
-    return res.status(404).json({ message: "Experience not found" });
+    throw new ApiError(status.NOT_FOUND, "Experience not found");
   }
 
   Object.assign(experience, req.body);
@@ -59,12 +61,12 @@ const deleteExperience = async (req, res) => {
   });
 
   if (!experience) {
-    return res.status(404).json({ message: "Experience not found" });
+    throw new ApiError(status.NOT_FOUND, "Experience not found");
   }
 
   await experience.deleteOne();
 
-  return experience;
+  res.send(experience);
 };
 
 module.exports = {

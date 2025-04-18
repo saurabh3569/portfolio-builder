@@ -1,6 +1,7 @@
-const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
 const bcrypt = require("bcryptjs");
+const ApiError = require("../utils/ApiError");
+const { status } = require("http-status");
 
 const updateUser = async (req, res) => {
   const { email, phone, password, name, username, location } = req.body;
@@ -8,16 +9,16 @@ const updateUser = async (req, res) => {
 
   if (email) {
     const emailExists = await User.exists({ email, _id: { $ne: userId } });
-    if (emailExists)
-      return res.status(400).json({ message: "Email is already in use" });
+    if (emailExists) {
+      throw new ApiError(status.BAD_REQUEST, "Email is already in use");
+    }
   }
 
   if (phone) {
     const phoneExists = await User.exists({ phone, _id: { $ne: userId } });
-    if (phoneExists)
-      return res
-        .status(400)
-        .json({ message: "Phone number is already in use" });
+    if (phoneExists) {
+      throw new ApiError(status.BAD_REQUEST, "Phone number is already in use");
+    }
   }
 
   if (username) {
@@ -25,8 +26,9 @@ const updateUser = async (req, res) => {
       username,
       _id: { $ne: userId },
     });
-    if (usernameExists)
-      return res.status(400).json({ message: "Username is already taken" });
+    if (usernameExists) {
+      throw new ApiError(status.BAD_REQUEST, "Username is already taken");
+    }
   }
 
   let updateData = { email, phone, name, username, location };
