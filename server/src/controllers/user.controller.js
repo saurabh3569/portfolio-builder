@@ -2,6 +2,7 @@ const User = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 const ApiError = require("../utils/ApiError");
 const { status } = require("http-status");
+const redis = require("../config/redis");
 
 const updateUser = async (req, res) => {
   const { email, phone, password, name, username, location } = req.body;
@@ -21,7 +22,7 @@ const updateUser = async (req, res) => {
     }
   }
 
-  if (username) {
+  if (username && username !== req.user.username) {
     const usernameExists = await User.exists({
       username,
       _id: { $ne: userId },
@@ -29,6 +30,7 @@ const updateUser = async (req, res) => {
     if (usernameExists) {
       throw new ApiError(status.BAD_REQUEST, "Username is already taken");
     }
+    await redis.del(req.user.username);
   }
 
   let updateData = { email, phone, name, username, location };
@@ -48,6 +50,7 @@ const deleteUser = async (req, res) => {
   const user = req.user;
 
   await user.deleteOne();
+  await redis.del(req.user.username);
 
   res.send({ user });
 };

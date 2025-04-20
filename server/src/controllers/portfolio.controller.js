@@ -2,18 +2,24 @@ const Portfolio = require("../models/portfolio.model");
 const User = require("../models/user.model");
 const ApiError = require("../utils/ApiError");
 const { status } = require("http-status");
+const redis = require("../config/redis");
 
 const getPublicPortfolio = async (req, res) => {
   const username = req.params.username;
 
-  const user = await User.findOne({ username }).select("_id");
+  const cachedPortfolio = await redis.get(username);
+
+  if (cachedPortfolio) {
+    return res.send(JSON.parse(cachedPortfolio));
+  }
+
+  const user = await User.findOne({ username });
 
   if (!user) {
     throw new ApiError(status.NOT_FOUND, "User not found");
   }
 
   const portfolio = await Portfolio.findOne({ user: user._id, isPublic: true })
-    .populate("user")
     .populate("educations")
     .populate("experiences")
     .populate("projects")
@@ -23,6 +29,10 @@ const getPublicPortfolio = async (req, res) => {
   if (!portfolio) {
     throw new ApiError(status.NOT_FOUND, "Portfolio not found");
   }
+
+  portfolio.user = user;
+
+  await redis.set(user.username, JSON.stringify(portfolio), "EX", 60 * 60); // 1 hour
 
   res.send(portfolio);
 };
