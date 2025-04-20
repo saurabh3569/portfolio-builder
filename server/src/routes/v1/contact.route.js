@@ -16,7 +16,7 @@ router.get("/", auth(), contactController.listContact);
 // Create
 router.post(
   "/",
-  rateLimiter(3, 60), // can be send up to 3 request in every 60 second
+  rateLimiter(1, 60), // can be send up to 1 request in every 60 second
   validate(contactValidation.createContact),
   contactController.createContact
 );

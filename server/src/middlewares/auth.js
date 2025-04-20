@@ -3,16 +3,15 @@ const { status } = require("http-status");
 const ApiError = require("../utils/ApiError");
 const User = require("../models/user.model");
 
-module.exports = () => (req, res, next) => {
-  const token = req.headers.authorization?.split(" ")[1];
+const auth = () => async (req, res, next) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
 
-  if (!token) {
-    throw new ApiError(status.UNAUTHORIZED, "No token provided");
-  }
-  jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
-    if (err) {
-      throw new ApiError(401, "Invalid token");
+    if (!token) {
+      throw new ApiError(status.UNAUTHORIZED, "No token provided");
     }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     const user = await User.findOne({ _id: decoded.id });
 
@@ -23,5 +22,9 @@ module.exports = () => (req, res, next) => {
     req.user = user;
 
     next();
-  });
+  } catch (error) {
+    next(error);
+  }
 };
+
+module.exports = auth;
