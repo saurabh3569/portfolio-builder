@@ -11,12 +11,43 @@ This is a full-stack MERN (MongoDB, Express.js, React.js, Node.js) portfolio man
 - **Education & Experience Tracking:** Manage education and work experience.
 - **Projects & Skills:** Showcase projects and skills with descriptions.
 - **Social Links Integration:** Add social media links.
-- **Contact Form:** Allows users to send messages securely.
+- **Contact Form:** Allows users to send messages securely. **(Includes email notifications using Nodemailer)**
 - **REST API with JWT Authentication.**
 - **Swagger API Documentation for easy API testing.**
 - **Bootstrap for responsive UI.**
 - **Redis for rate limiting and preventing abuse on contact forms.**
 - **Security Enhancements:** Implemented Helmet, CORS, and Compression.
+
+## Email Notifications
+
+This project integrates **Nodemailer** to send email notifications when users submit messages through the contact form.
+
+- **Nodemailer Setup:** The contact form emails are sent using Gmail as the email service.
+- When a message is sent via the contact form, the details (name, email, and message) are sent to the configured email address (`NODE_MAILER_GMAIL`).
+- The email sent includes a structured HTML template with the user's details.
+
+### How to Configure Email:
+
+1. **Set Up Environment Variables:**
+
+   - `NODE_MAILER_GMAIL`: Your Gmail email address (for sending emails).
+   - `NODE_MAILER_PASS`: Your Gmail password or an app-specific password (if two-factor authentication is enabled).
+
+2. **Email Template:**
+   The contact form email is sent with an HTML template containing the message details.
+
+Example email content:
+
+```html
+<div>
+  <p>Great news! You have received a message from a recruiter:</p>
+  <div>
+    <p><strong>Name:</strong> John Doe</p>
+    <p><strong>Email:</strong> john.doe@example.com</p>
+    <p><strong>Message:</strong> I'm interested in your portfolio project.</p>
+  </div>
+</div>
+```
 
 ## Tech Stack
 
@@ -73,6 +104,8 @@ This is a full-stack MERN (MongoDB, Express.js, React.js, Node.js) portfolio man
    REDIS_HOST=127.0.0.1
    REDIS_PORT=6379
    REDIS_URL=your_redis_url (for production)
+   NODE_MAILER_GMAIL=your_gmail_address@gmail.com
+   NODE_MAILER_PASS=your_email_password
    ```
 
 4. **Start the backend server:**

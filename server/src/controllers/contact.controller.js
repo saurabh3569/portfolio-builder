@@ -3,6 +3,7 @@ const Portfolio = require("../models/portfolio.model");
 const User = require("../models/user.model");
 const ApiError = require("../utils/ApiError");
 const { status } = require("http-status");
+const sendEmail = require("../utils/sendEmail");
 
 const getContact = async (req, res) => {
   const contact = await Contact.findOne({
@@ -24,7 +25,7 @@ const listContact = async (req, res) => {
 };
 
 const createContact = async (req, res) => {
-  const user = await User.exists({ _id: req.body.userId });
+  const user = await User.findOne({ _id: req.body.userId });
 
   if (!user) {
     throw new ApiError(status.NOT_FOUND, "User not found");
@@ -41,6 +42,14 @@ const createContact = async (req, res) => {
     },
     { new: true }
   );
+
+  await sendEmail({
+    subject: `new message from ${req.body.name}`,
+    name: req.body.name,
+    email: req.body.email,
+    message: req.body.message,
+    to: user.email,
+  });
 
   res.send(contact);
 };
