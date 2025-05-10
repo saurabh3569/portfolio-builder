@@ -49,8 +49,6 @@ Example email content:
 </div>
 ```
 
-````
-
 ## Tech Stack
 
 ### Frontend:
@@ -188,4 +186,3 @@ To deploy the application:
 ## License
 
 This project is licensed under the **MIT License**.
-````
