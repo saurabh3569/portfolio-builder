@@ -10,6 +10,7 @@ const routes = require("./routes/v1");
 const { errorConverter, errorHandler } = require("./middlewares/errorHandler");
 const swaggerFile = require("./swagger/swagger-output.json");
 const { connectQueue } = require("./utils/rabbitmq");
+const worker = require("./utils/emailWorker");
 
 const app = express();
 
