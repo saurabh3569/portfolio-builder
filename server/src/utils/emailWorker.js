@@ -1,7 +1,7 @@
 const { connectQueue, consumeQueue } = require("./rabbitmq");
 const sendEmail = require("./sendEmail");
 
-(async () => {
+const startEmailConsumer = async () => {
   await connectQueue();
   consumeQueue(async (data) => {
     try {
@@ -11,4 +11,6 @@ const sendEmail = require("./sendEmail");
       console.error("❌ Email failed for:", data.to, err);
     }
   });
-})();
+};
+
+startEmailConsumer();
