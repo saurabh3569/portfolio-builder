@@ -3,7 +3,7 @@ const Portfolio = require("../models/portfolio.model");
 const User = require("../models/user.model");
 const ApiError = require("../utils/ApiError");
 const { status } = require("http-status");
-const sendEmail = require("../utils/sendEmail");
+const { sendToQueue } = require("../utils/rabbitmq");
 
 const getContact = async (req, res) => {
   const contact = await Contact.findOne({
@@ -43,8 +43,8 @@ const createContact = async (req, res) => {
     { new: true }
   );
 
-  await sendEmail({
-    subject: `new message from ${req.body.name}`,
+  await sendToQueue({
+    subject: `New message from ${req.body.name}`,
     name: req.body.name,
     email: req.body.email,
     message: req.body.message,

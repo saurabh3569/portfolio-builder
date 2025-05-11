@@ -9,6 +9,7 @@ const swaggerUi = require("swagger-ui-express");
 const routes = require("./routes/v1");
 const { errorConverter, errorHandler } = require("./middlewares/errorHandler");
 const swaggerFile = require("./swagger/swagger-output.json");
+const { connectQueue } = require("./utils/rabbitmq");
 
 const app = express();
 
@@ -41,6 +42,8 @@ const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
   try {
+    // Connect to RabbitMQ
+    await connectQueue();
     // Connect to MongoDB
     await connectDB();
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

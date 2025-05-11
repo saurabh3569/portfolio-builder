@@ -16,13 +16,14 @@ services:
     depends_on:
       - mongo
       - redis
+      - rabbitmq
 
   client:
     build: ./client
     container_name: client
     ports:
       - "3000:3000"
-    environment:
+    env_file:
       - ./client/.env
     volumes:
       - ./client:/app
@@ -47,6 +48,28 @@ services:
       - "6379:6379"
     volumes:
       - redis-data:/data
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"    # for AMQP (code connects here)
+      - "15672:15672"  # for management UI
+    environment:
+      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
+  email-worker:
+    build:
+      context: ./server
+    container_name: email-worker
+    command: node src/utils/emailWorker.js
+    env_file:
+      - ./server/.env
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    depends_on:
+      - rabbitmq
 
 volumes:
   mongo-data:
