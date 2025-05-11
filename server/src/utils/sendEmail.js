@@ -9,14 +9,20 @@ const transporter = nodemailer.createTransport({
 });
 
 async function sendEmail({ to, subject, message, email, name }) {
-  const htmlContent = getEmailHTML({ message, email, name });
+  try {
+    const htmlContent = getEmailHTML({ message, email, name });
 
-  await transporter.sendMail({
-    from: `Portfolio Craft <${process.env.NODE_MAILER_GMAIL}>`,
-    to,
-    subject,
-    html: htmlContent,
-  });
+    await transporter.sendMail({
+      from: `Portfolio Craft <${process.env.NODE_MAILER_GMAIL}>`,
+      to,
+      subject,
+      html: htmlContent,
+    });
+
+    console.log("✅ Email sent to:", to);
+  } catch (err) {
+    console.error("❌ Email failed for:", to, err);
+  }
 }
 
 function getEmailHTML({ message, email, name }) {
