@@ -58,18 +58,6 @@ services:
       - "15672:15672"  # for management UI
     environment:
       RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
-  email-worker:
-    build:
-      context: ./server
-    container_name: email-worker
-    command: node src/utils/emailWorker.js
-    env_file:
-      - ./server/.env
-    volumes:
-      - ./server:/app
-      - /app/node_modules
-    depends_on:
-      - rabbitmq
 
 volumes:
   mongo-data:

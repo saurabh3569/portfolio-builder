@@ -11,7 +11,7 @@ This is a full-stack MERN (MongoDB, Express.js, React.js, Node.js) portfolio man
 - **Education & Experience Tracking:** Manage education and work experience.
 - **Projects & Skills:** Showcase projects and skills with descriptions.
 - **Social Links Integration:** Add social media links.
-- **Contact Form:** Allows users to send messages securely. **(Includes email notifications using Nodemailer)**
+- **Contact Form:** Allows users to send messages securely. **(Includes email notifications using Nodemailer and RabbitMQ)**
 - **REST API with JWT Authentication.**
 - **Swagger API Documentation for easy API testing.**
 - **Bootstrap for responsive UI.**
@@ -20,11 +20,11 @@ This is a full-stack MERN (MongoDB, Express.js, React.js, Node.js) portfolio man
 
 ## Email Notifications
 
-This project integrates **Nodemailer** to send email notifications when users submit messages through the contact form.
+This project integrates **Nodemailer** and **RabbitMQ** to send email notifications when users submit messages through the contact form.
 
-- **Nodemailer Setup:** The contact form emails are sent using Gmail as the email service.
-- When a message is sent via the contact form, the details (name, email, and message) are sent to the configured email address (`NODE_MAILER_GMAIL`).
-- The email sent includes a structured HTML template with the user's details.
+- **RabbitMQ Queue:** Contact form messages are pushed to a RabbitMQ queue.
+- **Nodemailer Worker:** A worker listens to the queue and sends emails using Gmail.
+- **Email Content:** Includes structured HTML template with the user's details.
 
 ### How to Configure Email:
 
@@ -67,6 +67,7 @@ Example email content:
 - Swagger API Documentation
 - Helmet, CORS, and Compression for security and performance
 - **Redis for rate limiting**
+- **RabbitMQ + Nodemailer for email queue processing**
 
 ## Installation
 
@@ -75,6 +76,7 @@ Example email content:
 - Node.js installed
 - MongoDB installed and running
 - Redis installed and running
+- RabbitMQ installed and running
 
 ### Steps:
 
@@ -106,6 +108,7 @@ Example email content:
    REDIS_URL=your_redis_url (for production)
    NODE_MAILER_GMAIL=your_gmail_address@gmail.com
    NODE_MAILER_PASS=your_email_password
+   RABBITMQ_URL=amqp://guest:guest@localhost:5672
    ```
 
 4. **Start the backend server:**
@@ -128,6 +131,7 @@ Example email content:
    ```
 
 7. **Start the frontend:**
+
    ```sh
    yarn start
    ```
@@ -142,20 +146,30 @@ Example email content:
 ### Steps:
 
 1. **Clone the repository:**
+
    ```sh
    git clone https://github.com/saurabh3569/portfolio.git
    cd portfolio
    ```
+
 2. **Create `.env` files** for both backend and frontend as described above.
 3. **Start the application using Docker Compose:**
+
    ```sh
    docker-compose up --build
    ```
+
 4. The application will be accessible at:
+
    - **Backend:** `http://localhost:5000`
    - **Frontend:** `http://localhost:3000`
    - **MongoDB:** `mongodb://localhost:27017`
    - **Redis:** `redis://localhost:6379`
+   - **RabbitMQ (AMQP URL):** `amqp://guest:guest@localhost:5672`
+   - **RabbitMQ Management UI:** `http://localhost:15672`
+
+     - **Username:** `guest`
+     - **Password:** `guest`
 
 ## API Endpoints
 
