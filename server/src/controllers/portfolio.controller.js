@@ -75,9 +75,9 @@ const updatePortfolio = async (req, res) => {
 const updatePortfolioVisibility = async (req, res) => {
   const userId = req.user._id;
 
-  let portfolio = await Portfolio.findOne({ user: userId }).select(
-    "_id isPublic username"
-  );
+  let portfolio = await Portfolio.findOne({ user: userId })
+    .select("_id isPublic")
+    .populate("user", "username");
 
   if (!portfolio) {
     portfolio = await Portfolio.create({ user: userId, ...req.body });
@@ -87,7 +87,7 @@ const updatePortfolioVisibility = async (req, res) => {
 
   await portfolio.save();
 
-  await redis.del(portfolio.username);
+  await redis.del(portfolio.user.username);
 
   res.send(portfolio);
 };
