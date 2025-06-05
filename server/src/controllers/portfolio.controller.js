@@ -21,7 +21,10 @@ const getPublicPortfolio = async (req, res) => {
 
   const portfolio = await Portfolio.findOne({ user: user._id, isPublic: true })
     .populate("educations")
-    .populate("experiences")
+    .populate({
+      path: "experiences",
+      options: { sort: { startDate: -1 } },
+    })
     .populate("projects")
     .populate("skills")
     .populate("socialLinks");
@@ -73,7 +76,7 @@ const updatePortfolioVisibility = async (req, res) => {
   const userId = req.user._id;
 
   let portfolio = await Portfolio.findOne({ user: userId }).select(
-    "_id isPublic"
+    "_id isPublic username"
   );
 
   if (!portfolio) {
@@ -83,6 +86,8 @@ const updatePortfolioVisibility = async (req, res) => {
   portfolio.isPublic = req.body.isPublic;
 
   await portfolio.save();
+
+  await redis.del(portfolio.username);
 
   res.send(portfolio);
 };
