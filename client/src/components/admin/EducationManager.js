@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import moment from "moment";
 
 function EducationManager({
   educations,
@@ -208,26 +209,12 @@ function EducationManager({
                   {edu.degree} @ {edu.institution}
                 </h5>
                 <p className="card-date">
-                  {new Date(edu.startDate).toLocaleDateString()} -{" "}
+                  {moment(edu.startDate).format("MMM YYYY")} -{" "}
                   {edu.endDate
-                    ? new Date(edu.endDate).toLocaleDateString()
+                    ? moment(edu.endDate).format("MMM YYYY")
                     : "Present"}
                 </p>
                 <p className="card-description">{edu.description}</p>
-                {/* {edu.subjects && edu.subjects.length > 0 && (
-                  <p className="card-tech">
-                    {edu.subjects.map((subject, subjectIdx) => (
-                      <span
-                        key={subjectIdx}
-                        className="tech-item"
-                        data-aos="fade"
-                        data-aos-delay={subjectIdx * 50}
-                      >
-                        {subject}
-                      </span>
-                    ))}
-                  </p>
-                )} */}
                 <div className="action-buttons">
                   <button
                     className="btn btn-primary btn-sm me-2"

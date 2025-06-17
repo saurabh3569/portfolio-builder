@@ -1,4 +1,5 @@
 import React from "react";
+import moment from "moment";
 
 function EducationSection({ educations }) {
   return (
@@ -22,9 +23,9 @@ function EducationSection({ educations }) {
                   <h5 className="card-title">{edu.degree}</h5>
                   <p className="card-institution">{edu.institution}</p>
                   <p className="card-date">
-                    {new Date(edu.startDate).toLocaleDateString()} -{" "}
+                    {moment(edu.startDate).format("MMM YYYY")} -{" "}
                     {edu.endDate
-                      ? new Date(edu.endDate).toLocaleDateString()
+                      ? moment(edu.endDate).format("MMM YYYY")
                       : "Present"}
                   </p>
                   {edu.description && (
