@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import moment from "moment";
 
 function ExperienceManager({
   experiences,
@@ -208,9 +209,9 @@ function ExperienceManager({
                   {exp.title} @ {exp.company}
                 </h5>
                 <p className="card-date">
-                  {new Date(exp.startDate).toLocaleDateString()} -{" "}
+                  {moment(exp.startDate).format("MMM YYYY")} -{" "}
                   {exp.endDate
-                    ? new Date(exp.endDate).toLocaleDateString()
+                    ? moment(exp.endDate).format("MMM YYYY")
                     : "Present"}
                 </p>
                 <p className="card-description">{exp.description}</p>
