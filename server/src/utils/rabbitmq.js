@@ -2,12 +2,13 @@ require("dotenv").config();
 const amqplib = require("amqplib");
 const ApiError = require("./ApiError");
 const { status } = require("http-status");
+const { env } = require("../config/env");
 
 let channel, connection;
 
 const connectQueue = async () => {
   try {
-    connection = await amqplib.connect(process.env.RABBITMQ_URL);
+    connection = await amqplib.connect(env.RABBITMQ_URL);
     channel = await connection.createChannel();
     await channel.assertQueue("email-queue");
     console.log("RabbitMQ Connected and Channel Ready");

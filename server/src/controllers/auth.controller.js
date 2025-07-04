@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const Portfolio = require("../models/portfolio.model");
 const ApiError = require("../utils/ApiError");
 const { status } = require("http-status");
+const { env } = require("../config/env");
 
 const register = async (req, res) => {
   const { email, phone, username } = req.body;
@@ -38,8 +39,8 @@ const register = async (req, res) => {
   await user.save();
   await portfolio.save();
 
-  const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-    expiresIn: `${process.env.JWT_ACCESS_EXPIRATION_MINUTES}m`,
+  const token = jwt.sign({ id: user.id }, env.JWT_SECRET, {
+    expiresIn: `${env.JWT_ACCESS_EXPIRATION_MINUTES}m`,
   });
 
   const userObj = user.toObject();
@@ -56,8 +57,8 @@ const login = async (req, res) => {
   if (!user || !(await bcrypt.compare(password, user.password))) {
     throw new ApiError(status.BAD_REQUEST, "Invalid credentials");
   }
-  const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-    expiresIn: `${process.env.JWT_ACCESS_EXPIRATION_MINUTES}m`,
+  const token = jwt.sign({ id: user.id }, env.JWT_SECRET, {
+    expiresIn: `${env.JWT_ACCESS_EXPIRATION_MINUTES}m`,
   });
 
   const userObj = user.toObject();
