@@ -1,10 +1,11 @@
 const nodemailer = require("nodemailer");
+const { env } = require("../config/env");
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: process.env.NODE_MAILER_GMAIL,
-    pass: process.env.NODE_MAILER_PASS,
+    user: env.NODE_MAILER_GMAIL,
+    pass: env.NODE_MAILER_PASS,
   },
 });
 
@@ -13,7 +14,7 @@ async function sendEmail({ to, subject, message, email, name }) {
     const htmlContent = getEmailHTML({ message, email, name });
 
     await transporter.sendMail({
-      from: `Portfolio Craft <${process.env.NODE_MAILER_GMAIL}>`,
+      from: `Portfolio Craft <${env.NODE_MAILER_GMAIL}>`,
       to,
       subject,
       html: htmlContent,
@@ -41,7 +42,7 @@ function getEmailHTML({ message, email, name }) {
           
           <p>Best regards,<br />
           <strong>The Portfolio Craft Team</strong><br />
-          <a href="mailto:${process.env.NODE_MAILER_GMAIL}" style="color: #007BFF;">Contact Us</a><br />
+          <a href="mailto:${env.NODE_MAILER_GMAIL}" style="color: #007BFF;">Contact Us</a><br />
           <small>Portfolio Craft © 2025</small></p>
         </div>
         

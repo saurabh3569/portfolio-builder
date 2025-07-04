@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const { status } = require("http-status");
 const ApiError = require("../utils/ApiError");
 const User = require("../models/user.model");
+const { env } = require("../config/env");
 
 const auth = () => async (req, res, next) => {
   try {
@@ -11,7 +12,7 @@ const auth = () => async (req, res, next) => {
       throw new ApiError(status.UNAUTHORIZED, "No token provided");
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, env.JWT_SECRET);
 
     const user = await User.findOne({ _id: decoded.id });
 

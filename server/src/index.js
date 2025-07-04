@@ -11,6 +11,7 @@ const { errorConverter, errorHandler } = require("./middlewares/errorHandler");
 const swaggerFile = require("./swagger/swagger-output.json");
 const { connectQueue } = require("./utils/rabbitmq");
 const worker = require("./utils/emailWorker");
+const { env } = require("./config/env");
 
 const app = express();
 
@@ -39,7 +40,7 @@ app.use("/v1", routes);
 app.use(errorConverter);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000;
+const PORT = env.PORT || 5000;
 
 const startServer = async () => {
   try {
