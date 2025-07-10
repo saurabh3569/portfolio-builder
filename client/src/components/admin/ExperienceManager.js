@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import moment from "moment";
+import { getDurationSummary } from "../../utils/helper";
 
 function ExperienceManager({
   experiences,
@@ -212,7 +213,8 @@ function ExperienceManager({
                   {moment(exp.startDate).format("MMM YYYY")} -{" "}
                   {exp.endDate
                     ? moment(exp.endDate).format("MMM YYYY")
-                    : "Present"}
+                    : "Present"}{" "}
+                  ({getDurationSummary(exp.startDate, exp.endDate)})
                 </p>
                 <p className="card-description">{exp.description}</p>
                 {exp.technologies && exp.technologies.length > 0 && (
