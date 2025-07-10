@@ -1,5 +1,6 @@
 import React from "react";
 import moment from "moment";
+import { getDurationSummary } from "../../utils/helper";
 
 function ExperienceSection({ experiences }) {
   return (
@@ -27,7 +28,8 @@ function ExperienceSection({ experiences }) {
                     {moment(exp.startDate).format("MMM YYYY")} -{" "}
                     {exp.endDate
                       ? moment(exp.endDate).format("MMM YYYY")
-                      : "Present"}
+                      : "Present"}{" "}
+                    ({getDurationSummary(exp.startDate, exp.endDate)})
                   </p>
                   <p className="card-description">{exp.description}</p>
                   <p className="card-tech">
