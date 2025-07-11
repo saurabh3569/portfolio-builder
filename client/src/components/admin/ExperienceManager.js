@@ -214,7 +214,7 @@ function ExperienceManager({
                   {exp.endDate
                     ? moment(exp.endDate).format("MMM YYYY")
                     : "Present"}{" "}
-                  ({getDurationSummary(exp.startDate, exp.endDate)})
+                  {getDurationSummary(exp.startDate, exp.endDate)}
                 </p>
                 <p className="card-description">{exp.description}</p>
                 {exp.technologies && exp.technologies.length > 0 && (
