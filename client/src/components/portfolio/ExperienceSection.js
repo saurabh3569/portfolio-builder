@@ -29,7 +29,7 @@ function ExperienceSection({ experiences }) {
                     {exp.endDate
                       ? moment(exp.endDate).format("MMM YYYY")
                       : "Present"}{" "}
-                    ({getDurationSummary(exp.startDate, exp.endDate)})
+                    {getDurationSummary(exp.startDate, exp.endDate)}
                   </p>
                   <p className="card-description">{exp.description}</p>
                   <p className="card-tech">
