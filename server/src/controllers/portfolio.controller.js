@@ -17,7 +17,7 @@ const getPublicPortfolio = async (req, res) => {
   const cachedPortfolio = await redis.get(username);
 
   if (cachedPortfolio) {
-    // return res.send(JSON.parse(cachedPortfolio));
+    return res.send(JSON.parse(cachedPortfolio));
   }
 
   const user = await User.findOne({ where: { username } });
