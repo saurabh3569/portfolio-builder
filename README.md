@@ -1,8 +1,8 @@
-# MERN Stack Portfolio Project
+# PERN Stack Portfolio Project
 
 ## Introduction
 
-This is a full-stack MERN (MongoDB, Express.js, React.js, Node.js) portfolio management application that enables users to create and manage their portfolio, including education, experience, projects, skills, and social links.
+This is a full-stack PERN (PostgreSQL, Express.js, React.js, Node.js) portfolio management application that enables users to create and manage their portfolio, including education, experience, projects, skills, and social links.
 
 ## Features
 
@@ -60,8 +60,8 @@ Example email content:
 
 - Node.js
 - Express.js
-- MongoDB
-- Mongoose
+- PostgreSQL
+- Sequelize
 - JWT Authentication
 - Validation Middleware
 - Swagger API Documentation
@@ -74,7 +74,7 @@ Example email content:
 ### Prerequisites:
 
 - Node.js installed
-- MongoDB installed and running
+- PostgreSQL installed and running
 - Redis installed and running
 - RabbitMQ installed and running
 
@@ -98,7 +98,11 @@ Example email content:
 
    ```sh
    PORT=5000
-   MONGODB_URL=your_mongodb_connection_string
+   DB_HOST=127.0.0.1
+   DB_PORT=5432
+   DB_NAME=portfolio-builder
+   DB_USER=postgres
+   DB_PASSWORD=postgres
    JWT_SECRET=your_jwt_secret
    JWT_ACCESS_EXPIRATION_MINUTES=300
    JWT_REFRESH_EXPIRATION_DAYS=30
@@ -163,7 +167,6 @@ Example email content:
 
    - **Backend:** `http://localhost:5000`
    - **Frontend:** `http://localhost:3000`
-   - **MongoDB:** `mongodb://localhost:27017`
    - **Redis:** `redis://localhost:6379`
    - **RabbitMQ (AMQP URL):** `amqp://guest:guest@localhost:5672`
    - **RabbitMQ Management UI:** `http://localhost:15672`

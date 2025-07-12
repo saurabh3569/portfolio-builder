@@ -1,19 +1,35 @@
-const mongoose = require("mongoose");
-
-const skillSchema = mongoose.Schema(
-  {
-    name: { type: String, required: true },
-    type: { type: String, required: true },
-    portfolio: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Portfolio",
-      required: true,
+module.exports = (sequelize, DataTypes) => {
+  const Skill = sequelize.define(
+    "Skill",
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      type: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
-  },
-  { timestamps: true }
-);
+    {
+      tableName: "skills",
+      timestamps: true,
+      underscored: true,
+    }
+  );
 
-skillSchema.index({ portfolio: 1 });
+  Skill.associate = (models) => {
+    Skill.belongsTo(models.Portfolio, {
+      foreignKey: "portfolio_id",
+      as: "portfolio",
+      onDelete: "CASCADE",
+    });
+  };
 
-const Skill = mongoose.model("Skill", skillSchema);
-module.exports = Skill;
+  return Skill;
+};

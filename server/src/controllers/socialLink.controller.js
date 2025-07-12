@@ -1,12 +1,13 @@
-const SocialLink = require("../models/socialLink.model");
-const Portfolio = require("../models/portfolio.model");
+const { SocialLink } = require("../models");
 const ApiError = require("../utils/ApiError");
 const { status } = require("http-status");
 
 const getSocialLink = async (req, res) => {
   const socialLink = await SocialLink.findOne({
-    _id: req.params.id,
-    portfolio: req.user.portfolio,
+    where: {
+      id: req.params.id,
+      portfolio_id: req.user.portfolio.id,
+    },
   });
 
   if (!socialLink) {
@@ -17,54 +18,54 @@ const getSocialLink = async (req, res) => {
 };
 
 const listSocialLink = async (req, res) => {
-  const socialLinks = await SocialLink.find({ portfolio: req.user.portfolio });
+  const socialLinks = await SocialLink.findAll({
+    where: {
+      portfolio_id: req.user.portfolio.id,
+    },
+  });
+
   res.send(socialLinks);
 };
 
 const createSocialLink = async (req, res) => {
-  let socialLink = await SocialLink.create({
+  const socialLink = await SocialLink.create({
     ...req.body,
-    portfolio: req.user.portfolio,
+    portfolio_id: req.user.portfolio.id,
   });
-
-  await Portfolio.findByIdAndUpdate(
-    socialLink.portfolio,
-    {
-      $push: { socialLinks: socialLink._id },
-    },
-    { new: true }
-  );
 
   res.send(socialLink);
 };
 
 const updateSocialLink = async (req, res) => {
-  let socialLink = await SocialLink.findOne({
-    _id: req.params.id,
-    portfolio: req.user.portfolio,
+  const socialLink = await SocialLink.findOne({
+    where: {
+      id: req.params.id,
+      portfolio_id: req.user.portfolio.id,
+    },
   });
 
   if (!socialLink) {
     throw new ApiError(status.NOT_FOUND, "SocialLink not found");
   }
 
-  Object.assign(socialLink, req.body);
-  await socialLink.save();
+  await socialLink.update(req.body);
 
   res.send(socialLink);
 };
 
 const deleteSocialLink = async (req, res) => {
-  let socialLink = await SocialLink.findOne({
-    _id: req.params.id,
-    portfolio: req.user.portfolio,
+  const socialLink = await SocialLink.findOne({
+    where: {
+      id: req.params.id,
+      portfolio_id: req.user.portfolio.id,
+    },
   });
 
   if (!socialLink) {
     throw new ApiError(status.NOT_FOUND, "SocialLink not found");
   }
 
-  await socialLink.deleteOne();
+  await socialLink.destroy();
 
   res.send(socialLink);
 };

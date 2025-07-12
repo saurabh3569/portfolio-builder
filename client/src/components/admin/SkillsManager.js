@@ -86,7 +86,7 @@ function SkillsManager({
               data-aos="fade-up"
               data-aos-delay={idx * 100}
             >
-              {editingSkill && editingSkill._id === skill._id ? (
+              {editingSkill && editingSkill.id === skill.id ? (
                 <form
                   onSubmit={handleUpdateSkill}
                   className="d-flex align-items-center gap-3 w-100"
@@ -138,7 +138,7 @@ function SkillsManager({
                     </button>
                     <button
                       className="btn btn-danger btn-sm"
-                      onClick={() => handleDeleteSkill(skill._id)}
+                      onClick={() => handleDeleteSkill(skill.id)}
                     >
                       Delete
                     </button>

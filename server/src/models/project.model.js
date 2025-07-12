@@ -1,23 +1,54 @@
-const mongoose = require("mongoose");
-
-const projectSchema = mongoose.Schema(
-  {
-    name: { type: String, required: true },
-    description: { type: String },
-    startDate: { type: Date },
-    endDate: { type: Date },
-    technologies: [{ type: String }],
-    links: { live: { type: String }, sourceCode: { type: String } },
-    portfolio: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Portfolio",
-      required: true,
+module.exports = (sequelize, DataTypes) => {
+  const Project = sequelize.define(
+    "Project",
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      description: {
+        type: DataTypes.TEXT,
+      },
+      startDate: {
+        type: DataTypes.DATE,
+        field: "start_date",
+      },
+      endDate: {
+        type: DataTypes.DATE,
+        field: "end_date",
+      },
+      technologies: {
+        type: DataTypes.ARRAY(DataTypes.STRING),
+        defaultValue: [],
+      },
+      liveLink: {
+        type: DataTypes.STRING,
+        field: "live_link",
+      },
+      sourceCodeLink: {
+        type: DataTypes.STRING,
+        field: "source_code_link",
+      },
     },
-  },
-  { timestamps: true }
-);
+    {
+      tableName: "projects",
+      timestamps: true,
+      underscored: true,
+    }
+  );
 
-projectSchema.index({ portfolio: 1 });
+  Project.associate = (models) => {
+    Project.belongsTo(models.Portfolio, {
+      foreignKey: "portfolio_id",
+      as: "portfolio",
+      onDelete: "CASCADE",
+    });
+  };
 
-const Project = mongoose.model("Project", projectSchema);
-module.exports = Project;
+  return Project;
+};

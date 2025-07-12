@@ -1,16 +1,39 @@
-const mongoose = require("mongoose");
+module.exports = (sequelize, DataTypes) => {
+  const Contact = sequelize.define(
+    "Contact",
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      message: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+    },
+    {
+      tableName: "contacts",
+      timestamps: true,
+      underscored: true,
+    }
+  );
 
-const contactSchema = mongoose.Schema(
-  {
-    email: { type: String, required: true },
-    name: { type: String, required: true },
-    message: { type: String, required: true },
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  },
-  { timestamps: true }
-);
+  Contact.associate = (models) => {
+    Contact.belongsTo(models.User, {
+      foreignKey: "user_id",
+      as: "user",
+      onDelete: "CASCADE",
+    });
+  };
 
-contactSchema.index({ user: 1 });
-
-const Contact = mongoose.model("Contact", contactSchema);
-module.exports = Contact;
+  return Contact;
+};

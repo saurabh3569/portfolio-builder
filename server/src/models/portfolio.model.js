@@ -1,22 +1,63 @@
-const { boolean } = require("joi");
-const mongoose = require("mongoose");
+module.exports = (sequelize, DataTypes) => {
+  const Portfolio = sequelize.define(
+    "Portfolio",
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      summary: {
+        type: DataTypes.TEXT,
+      },
+      resume: {
+        type: DataTypes.STRING,
+      },
+      isPublic: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        field: "is_public",
+      },
+    },
+    {
+      tableName: "portfolios",
+      timestamps: true,
+      underscored: true,
+    }
+  );
 
-const portfolioSchema = mongoose.Schema(
-  {
-    summary: { type: String },
-    resume: { type: String },
-    isPublic: { type: Boolean, default: false },
-    skills: [{ type: mongoose.Schema.Types.ObjectId, ref: "Skill" }],
-    experiences: [{ type: mongoose.Schema.Types.ObjectId, ref: "Experience" }],
-    educations: [{ type: mongoose.Schema.Types.ObjectId, ref: "Education" }],
-    projects: [{ type: mongoose.Schema.Types.ObjectId, ref: "Project" }],
-    socialLinks: [{ type: mongoose.Schema.Types.ObjectId, ref: "SocialLink" }],
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  },
-  { timestamps: true }
-);
+  Portfolio.associate = (models) => {
+    Portfolio.belongsTo(models.User, {
+      foreignKey: "user_id",
+      as: "user",
+      onDelete: "CASCADE",
+    });
 
-portfolioSchema.index({ user: 1 });
+    Portfolio.hasMany(models.Skill, {
+      foreignKey: "portfolio_id",
+      as: "skills",
+    });
 
-const Portfolio = mongoose.model("Portfolio", portfolioSchema);
-module.exports = Portfolio;
+    Portfolio.hasMany(models.Experience, {
+      foreignKey: "portfolio_id",
+      as: "experiences",
+    });
+
+    Portfolio.hasMany(models.Education, {
+      foreignKey: "portfolio_id",
+      as: "educations",
+    });
+
+    Portfolio.hasMany(models.Project, {
+      foreignKey: "portfolio_id",
+      as: "projects",
+    });
+
+    Portfolio.hasMany(models.SocialLink, {
+      foreignKey: "portfolio_id",
+      as: "socialLinks",
+    });
+  };
+
+  return Portfolio;
+};

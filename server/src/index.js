@@ -1,5 +1,5 @@
 require("dotenv").config();
-const connectDB = require("./config/db");
+const db = require("./models/index");
 const express = require("express");
 const helmet = require("helmet");
 const cors = require("cors");
@@ -44,11 +44,20 @@ const PORT = env.PORT || 5000;
 
 const startServer = async () => {
   try {
-    // Connect to MongoDB
-    await connectDB();
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    // Connect to PostgreSQL via Sequelize
+    await db.sequelize.authenticate();
+    console.log("✅ PostgreSQL connected successfully");
+
+    // Sync models (optional: pass { alter: true } or { force: true } in dev)
+    await db.sequelize.sync({ alert: true });
+    console.log("✅ Sequelize models synced");
+
+    // Start server
+    app.listen(PORT, () =>
+      console.log(`🚀 Server running on http://localhost:${PORT}`)
+    );
   } catch (error) {
-    console.error("Failed to connect to MongoDB:", error);
+    console.error("❌ Failed to connect to PostgreSQL:", error);
     process.exit(1);
   }
 };

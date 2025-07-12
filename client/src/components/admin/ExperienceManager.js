@@ -240,7 +240,7 @@ function ExperienceManager({
                   </button>
                   <button
                     className="btn btn-danger btn-sm"
-                    onClick={() => handleDeleteExperience(exp._id)}
+                    onClick={() => handleDeleteExperience(exp.id)}
                   >
                     Delete
                   </button>

@@ -83,7 +83,7 @@ export const deleteContact = (id) => {
 export const addExperience = (data) => api.post(`/experience`, data);
 
 export const updateExperience = (data) => {
-  return api.put(`/experience/${data._id}`, {
+  return api.put(`/experience/${data.id}`, {
     title: data.title,
     company: data.company,
     startDate: data.startDate,
@@ -100,7 +100,7 @@ export const deleteExperience = (id) => api.delete(`/experience/${id}`);
 export const addEducation = (data) => api.post(`/education`, data);
 
 export const updateEducation = (data) => {
-  return api.put(`/education/${data._id}`, {
+  return api.put(`/education/${data.id}`, {
     degree: data.degree,
     institution: data.institution,
     description: data.description,
@@ -116,7 +116,7 @@ export const deleteEducation = (id) => api.delete(`/education/${id}`);
 export const addProject = (data) => api.post(`/project`, data);
 
 export const updateProject = (data) => {
-  return api.put(`/project/${data._id}`, {
+  return api.put(`/project/${data.id}`, {
     name: data.name,
     description: data.description,
     technologies: data.technologies,
@@ -131,7 +131,7 @@ export const deleteProject = (id) => api.delete(`/project/${id}`);
 export const addSkill = (data) => api.post(`/skill`, data);
 
 export const updateSkill = (data) => {
-  return api.put(`/skill/${data._id}`, { name: data.name, type: data.type });
+  return api.put(`/skill/${data.id}`, { name: data.name, type: data.type });
 };
 
 export const deleteSkill = (id) => api.delete(`/skill/${id}`);
@@ -141,7 +141,7 @@ export const deleteSkill = (id) => api.delete(`/skill/${id}`);
 export const addSocialLink = (data) => api.post(`/social-link`, data);
 
 export const updateSocialLink = (data) => {
-  return api.put(`/social-link/${data._id}`, {
+  return api.put(`/social-link/${data.id}`, {
     platform: data.platform,
     url: data.url,
   });

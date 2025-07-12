@@ -87,7 +87,7 @@ function SocialLinksManager({
               data-aos="fade-up"
               data-aos-delay={idx * 100}
             >
-              {editingSocialLink && editingSocialLink._id === link._id ? (
+              {editingSocialLink && editingSocialLink.id === link.id ? (
                 <form
                   onSubmit={handleUpdateSocialLink}
                   className="edit-social-link-form"
@@ -148,7 +148,7 @@ function SocialLinksManager({
                     </button>
                     <button
                       className="btn btn-danger btn-sm"
-                      onClick={() => handleDeleteSocialLink(link._id)}
+                      onClick={() => handleDeleteSocialLink(link.id)}
                     >
                       Delete
                     </button>

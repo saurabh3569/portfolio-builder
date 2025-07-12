@@ -13,7 +13,7 @@ function ContactManager({ contacts, handleDeleteContact }) {
         <div className="contacts-list">
           {contacts.map((contact, idx) => (
             <div
-              key={contact._id}
+              key={contact.id}
               className="list-item"
               data-aos="fade-up"
               data-aos-delay={idx * 100}
@@ -39,7 +39,7 @@ function ContactManager({ contacts, handleDeleteContact }) {
                 <div className="action-buttons">
                   <button
                     className="btn btn-danger btn-sm"
-                    onClick={() => handleDeleteContact(contact._id)}
+                    onClick={() => handleDeleteContact(contact.id)}
                     title="Delete Contact"
                   >
                     Delete
