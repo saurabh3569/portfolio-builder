@@ -244,7 +244,7 @@ function ProjectsManager({
                   </button>
                   <button
                     className="btn btn-danger btn-sm"
-                    onClick={() => handleDeleteProject(proj._id)}
+                    onClick={() => handleDeleteProject(proj.id)}
                   >
                     Delete
                   </button>

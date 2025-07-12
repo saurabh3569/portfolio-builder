@@ -1,14 +1,20 @@
-const mongoose = require("mongoose");
 const { env } = require("./env");
 
-const connectDB = async () => {
-  try {
-    const conn = await mongoose.connect(env.MONGODB_URL);
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
-  } catch (error) {
-    console.error(`Error: ${error.message}`);
-    process.exit(1);
-  }
+module.exports = {
+  development: {
+    username: env.DB_USER,
+    password: env.DB_PASSWORD,
+    database: env.DB_NAME,
+    host: env.DB_HOST,
+    port: parseInt(env.DB_PORT, 10),
+    dialect: "postgres",
+    logging: false, // SQL logs
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+      family: 4,
+    },
+  },
 };
-
-module.exports = connectDB;

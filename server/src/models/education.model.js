@@ -1,22 +1,47 @@
-const mongoose = require("mongoose");
-
-const educationSchema = mongoose.Schema(
-  {
-    degree: { type: String, required: true },
-    institution: { type: String, required: true },
-    startDate: { type: Date, required: true },
-    endDate: { type: Date },
-    description: { type: String },
-    portfolio: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Portfolio",
-      required: true,
+module.exports = (sequelize, DataTypes) => {
+  const Education = sequelize.define(
+    "Education",
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      degree: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      institution: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      startDate: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        field: "start_date",
+      },
+      endDate: {
+        type: DataTypes.DATE,
+        field: "end_date",
+      },
+      description: {
+        type: DataTypes.TEXT,
+      },
     },
-  },
-  { timestamps: true }
-);
+    {
+      tableName: "educations",
+      timestamps: true,
+      underscored: true,
+    }
+  );
 
-educationSchema.index({ portfolio: 1 });
+  Education.associate = (models) => {
+    Education.belongsTo(models.Portfolio, {
+      foreignKey: "portfolio_id",
+      as: "portfolio",
+      onDelete: "CASCADE",
+    });
+  };
 
-const Education = mongoose.model("Education", educationSchema);
-module.exports = Education;
+  return Education;
+};

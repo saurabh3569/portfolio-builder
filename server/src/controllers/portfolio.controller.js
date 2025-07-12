@@ -1,5 +1,12 @@
-const Portfolio = require("../models/portfolio.model");
-const User = require("../models/user.model");
+const {
+  Portfolio,
+  User,
+  Education,
+  Experience,
+  Project,
+  Skill,
+  SocialLink,
+} = require("../models");
 const ApiError = require("../utils/ApiError");
 const { status } = require("http-status");
 const redis = require("../config/redis");
@@ -10,30 +17,34 @@ const getPublicPortfolio = async (req, res) => {
   const cachedPortfolio = await redis.get(username);
 
   if (cachedPortfolio) {
-    return res.send(JSON.parse(cachedPortfolio));
+    // return res.send(JSON.parse(cachedPortfolio));
   }
 
-  const user = await User.findOne({ username });
+  const user = await User.findOne({ where: { username } });
 
   if (!user) {
     throw new ApiError(status.NOT_FOUND, "User not found");
   }
 
-  const portfolio = await Portfolio.findOne({ user: user._id, isPublic: true })
-    .populate("educations")
-    .populate({
-      path: "experiences",
-      options: { sort: { startDate: -1 } },
-    })
-    .populate("projects")
-    .populate("skills")
-    .populate("socialLinks");
+  const portfolio = await Portfolio.findOne({
+    where: {
+      user_id: user.id,
+      isPublic: true,
+    },
+    include: [
+      { model: Education, as: "educations" },
+      { model: Experience, as: "experiences", order: [["startDate", "DESC"]] },
+      { model: Project, as: "projects" },
+      { model: Skill, as: "skills" },
+      { model: SocialLink, as: "socialLinks" },
+    ],
+  });
 
   if (!portfolio) {
     throw new ApiError(status.NOT_FOUND, "Portfolio not found");
   }
 
-  portfolio.user = user;
+  portfolio.dataValues.user = user;
 
   await redis.set(user.username, JSON.stringify(portfolio), "EX", 60 * 60); // 1 hour
 
@@ -41,15 +52,19 @@ const getPublicPortfolio = async (req, res) => {
 };
 
 const getUserPortfolio = async (req, res) => {
-  const userId = req.user._id;
+  const userId = req.user.id;
 
-  const portfolio = await Portfolio.findOne({ user: userId })
-    .populate("user")
-    .populate("educations")
-    .populate("experiences")
-    .populate("projects")
-    .populate("skills")
-    .populate("socialLinks");
+  const portfolio = await Portfolio.findOne({
+    where: { user_id: userId },
+    include: [
+      { model: User, as: "user" },
+      { model: Education, as: "educations" },
+      { model: Experience, as: "experiences" },
+      { model: Project, as: "projects" },
+      { model: Skill, as: "skills" },
+      { model: SocialLink, as: "socialLinks" },
+    ],
+  });
 
   if (!portfolio) {
     throw new ApiError(status.NOT_FOUND, "Portfolio not found");
@@ -59,32 +74,42 @@ const getUserPortfolio = async (req, res) => {
 };
 
 const updatePortfolio = async (req, res) => {
-  const userId = req.user._id;
+  const userId = req.user.id;
 
-  let portfolio = await Portfolio.findOne({ user: userId });
+  let portfolio = await Portfolio.findOne({
+    where: { user_id: userId },
+  });
+
+  console.log(req.body);
 
   if (!portfolio) {
-    portfolio = await Portfolio.create({ user: userId, ...req.body });
+    portfolio = await Portfolio.create({
+      user_id: userId,
+      ...req.body,
+    });
   } else {
-    portfolio.set(req.body);
-    await portfolio.save();
+    await portfolio.update(req.body);
   }
+
   res.send(portfolio);
 };
 
 const updatePortfolioVisibility = async (req, res) => {
-  const userId = req.user._id;
+  const userId = req.user.id;
 
-  let portfolio = await Portfolio.findOne({ user: userId })
-    .select("_id isPublic")
-    .populate("user", "username");
+  let portfolio = await Portfolio.findOne({
+    where: { user_id: userId },
+    include: [{ model: User, as: "user", attributes: ["username"] }],
+  });
 
   if (!portfolio) {
-    portfolio = await Portfolio.create({ user: userId, ...req.body });
+    portfolio = await Portfolio.create({
+      user_id: userId,
+      ...req.body,
+    });
   }
 
   portfolio.isPublic = req.body.isPublic;
-
   await portfolio.save();
 
   await redis.del(portfolio.user.username);

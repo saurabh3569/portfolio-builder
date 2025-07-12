@@ -1,19 +1,35 @@
-const mongoose = require("mongoose");
-
-const socialLinkSchema = mongoose.Schema(
-  {
-    platform: { type: String, required: true },
-    url: { type: String, required: true },
-    portfolio: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Portfolio",
-      required: true,
+module.exports = (sequelize, DataTypes) => {
+  const SocialLink = sequelize.define(
+    "SocialLink",
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      platform: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      url: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
-  },
-  { timestamps: true }
-);
+    {
+      tableName: "social_links",
+      timestamps: true,
+      underscored: true,
+    }
+  );
 
-socialLinkSchema.index({ portfolio: 1 });
+  SocialLink.associate = (models) => {
+    SocialLink.belongsTo(models.Portfolio, {
+      foreignKey: "portfolio_id",
+      as: "portfolio",
+      onDelete: "CASCADE",
+    });
+  };
 
-const SocialLink = mongoose.model("SocialLink", socialLinkSchema);
-module.exports = SocialLink;
+  return SocialLink;
+};

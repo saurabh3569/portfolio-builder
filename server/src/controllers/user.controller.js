@@ -1,4 +1,4 @@
-const User = require("../models/user.model");
+const { User } = require("../models");
 const bcrypt = require("bcryptjs");
 const ApiError = require("../utils/ApiError");
 const { status } = require("http-status");
@@ -8,51 +8,68 @@ const updateUser = async (req, res) => {
   const { email, phone, password, name, username, location } = req.body;
   const userId = req.user.id;
 
-  if (email) {
-    const emailExists = await User.exists({ email, _id: { $ne: userId } });
-    if (emailExists) {
+  const user = await User.findByPk(userId);
+
+  if (!user) {
+    throw new ApiError(status.NOT_FOUND, "User not found");
+  }
+
+  if (email && email !== user.email) {
+    const emailExists = await User.findOne({
+      where: { email },
+    });
+    if (emailExists && emailExists.id !== userId) {
       throw new ApiError(status.BAD_REQUEST, "Email is already in use");
     }
   }
 
-  if (phone) {
-    const phoneExists = await User.exists({ phone, _id: { $ne: userId } });
-    if (phoneExists) {
+  if (phone && phone !== user.phone) {
+    const phoneExists = await User.findOne({
+      where: { phone },
+    });
+    if (phoneExists && phoneExists.id !== userId) {
       throw new ApiError(status.BAD_REQUEST, "Phone number is already in use");
     }
   }
 
-  if (username && username !== req.user.username) {
-    const usernameExists = await User.exists({
-      username,
-      _id: { $ne: userId },
+  if (username && username !== user.username) {
+    const usernameExists = await User.findOne({
+      where: { username },
     });
-    if (usernameExists) {
+    if (usernameExists && usernameExists.id !== userId) {
       throw new ApiError(status.BAD_REQUEST, "Username is already taken");
     }
-    await redis.del(req.user.username);
+    await redis.del(user.username); // clear old username from cache
   }
 
-  let updateData = { email, phone, name, username, location };
+  const updateData = { email, phone, name, username, location };
+
   if (password) {
     updateData.password = await bcrypt.hash(password, 8);
   }
 
-  const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
-    new: true,
-    runValidators: true,
-  }).select("-password");
+  await user.update(updateData);
+
+  const updatedUser = user.toJSON();
+  delete updatedUser.password;
 
   res.send({ user: updatedUser });
 };
 
 const deleteUser = async (req, res) => {
-  const user = req.user;
+  const user = await User.findByPk(req.user.id);
 
-  await user.deleteOne();
-  await redis.del(req.user.username);
+  if (!user) {
+    throw new ApiError(status.NOT_FOUND, "User not found");
+  }
 
-  res.send({ user });
+  await redis.del(user.username);
+  await user.destroy();
+
+  const userObj = user.toJSON();
+  delete userObj.password;
+
+  res.send({ user: userObj });
 };
 
 module.exports = { updateUser, deleteUser };

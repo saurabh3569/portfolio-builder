@@ -1,12 +1,13 @@
-const Project = require("../models/project.model");
-const Portfolio = require("../models/portfolio.model");
+const { Project } = require("../models");
 const ApiError = require("../utils/ApiError");
 const { status } = require("http-status");
 
 const getProject = async (req, res) => {
   const project = await Project.findOne({
-    _id: req.params.id,
-    portfolio: req.user.portfolio,
+    where: {
+      id: req.params.id,
+      portfolio_id: req.user.portfolio.id,
+    },
   });
 
   if (!project) {
@@ -17,54 +18,54 @@ const getProject = async (req, res) => {
 };
 
 const listProject = async (req, res) => {
-  const projects = await Project.find({ portfolio: req.user.portfolio });
+  const projects = await Project.findAll({
+    where: {
+      portfolio_id: req.user.portfolio.id,
+    },
+  });
+
   res.send(projects);
 };
 
 const createProject = async (req, res) => {
-  let project = await Project.create({
+  const project = await Project.create({
     ...req.body,
-    portfolio: req.user.portfolio,
+    portfolio_id: req.user.portfolio.id,
   });
-
-  await Portfolio.findByIdAndUpdate(
-    project.portfolio,
-    {
-      $push: { projects: project._id },
-    },
-    { new: true }
-  );
 
   res.send(project);
 };
 
 const updateProject = async (req, res) => {
-  let project = await Project.findOne({
-    _id: req.params.id,
-    portfolio: req.user.portfolio,
+  const project = await Project.findOne({
+    where: {
+      id: req.params.id,
+      portfolio_id: req.user.portfolio.id,
+    },
   });
 
   if (!project) {
     throw new ApiError(status.NOT_FOUND, "Project not found");
   }
 
-  Object.assign(project, req.body);
-  await project.save();
+  await project.update(req.body);
 
   res.send(project);
 };
 
 const deleteProject = async (req, res) => {
-  let project = await Project.findOne({
-    _id: req.params.id,
-    portfolio: req.user.portfolio,
+  const project = await Project.findOne({
+    where: {
+      id: req.params.id,
+      portfolio_id: req.user.portfolio.id,
+    },
   });
 
   if (!project) {
     throw new ApiError(status.NOT_FOUND, "Project not found");
   }
 
-  await project.deleteOne();
+  await project.destroy();
 
   res.send(project);
 };

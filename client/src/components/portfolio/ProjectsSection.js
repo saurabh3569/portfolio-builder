@@ -26,9 +26,9 @@ function ProjectsSection({ projects }) {
                   </p>
                   {/* Display links if they exist */}
                   <div className="project-links mt-2">
-                    {proj.links?.live && (
+                    {proj.liveLink && (
                       <a
-                        href={proj.links.live}
+                        href={proj.liveLink}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="btn btn-outline-primary btn-sm me-2"
@@ -36,9 +36,9 @@ function ProjectsSection({ projects }) {
                         Live Demo
                       </a>
                     )}
-                    {proj.links?.sourceCode && (
+                    {proj?.sourceCodeLink && (
                       <a
-                        href={proj.links.sourceCode}
+                        href={proj?.sourceCodeLink}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="btn btn-outline-secondary btn-sm"

@@ -224,7 +224,7 @@ function EducationManager({
                   </button>
                   <button
                     className="btn btn-danger btn-sm"
-                    onClick={() => handleDeleteEducation(edu._id)}
+                    onClick={() => handleDeleteEducation(edu.id)}
                   >
                     Delete
                   </button>

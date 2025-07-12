@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const { status } = require("http-status");
 const ApiError = require("../utils/ApiError");
-const User = require("../models/user.model");
+const { User, Portfolio } = require("../models");
 const { env } = require("../config/env");
 
 const auth = () => async (req, res, next) => {
@@ -14,7 +14,9 @@ const auth = () => async (req, res, next) => {
 
     const decoded = jwt.verify(token, env.JWT_SECRET);
 
-    const user = await User.findOne({ _id: decoded.id });
+    const user = await User.findByPk(decoded.id, {
+      include: [{ model: Portfolio, as: "portfolio", attributes: ["id"] }],
+    });
 
     if (!user) {
       throw new ApiError(status.NOT_FOUND, "User not found!");

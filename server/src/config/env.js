@@ -3,7 +3,6 @@ const { cleanEnv, str, port, num, bool } = require("envalid");
 
 const env = cleanEnv(process.env, {
   PORT: port({ default: 5000 }),
-  MONGODB_URL: str({ default: "mongodb://localhost:27017/portfolio" }),
   JWT_SECRET: str(),
   JWT_ACCESS_EXPIRATION_MINUTES: num({ default: 300 }),
   JWT_REFRESH_EXPIRATION_DAYS: num({ default: 30 }),
@@ -15,6 +14,11 @@ const env = cleanEnv(process.env, {
   DOCKER_ENV: bool({ default: false }),
   REDIS_HOST_DOCKER: str({ default: "redis" }),
   REDIS_URL: str({ default: undefined }),
+  DB_HOST: str({ default: "localhost" }),
+  DB_PORT: port({ default: 5432 }),
+  DB_NAME: str({ default: "portfolio-builder" }),
+  DB_USER: str({ default: "postgres" }),
+  DB_PASSWORD: str({ default: "postgres" }),
 });
 
 module.exports = { env };

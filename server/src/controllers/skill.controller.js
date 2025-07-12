@@ -1,12 +1,13 @@
-const Skill = require("../models/skill.model");
-const Portfolio = require("../models/portfolio.model");
+const { Skill } = require("../models");
 const ApiError = require("../utils/ApiError");
 const { status } = require("http-status");
 
 const getSkill = async (req, res) => {
   const skill = await Skill.findOne({
-    _id: req.params.id,
-    portfolio: req.user.portfolio,
+    where: {
+      id: req.params.id,
+      portfolio_id: req.user.portfolio.id,
+    },
   });
 
   if (!skill) {
@@ -17,54 +18,54 @@ const getSkill = async (req, res) => {
 };
 
 const listSkill = async (req, res) => {
-  const skills = await Skill.find({ portfolio: req.user.portfolio });
+  const skills = await Skill.findAll({
+    where: {
+      portfolio_id: req.user.portfolio.id,
+    },
+  });
+
   res.send(skills);
 };
 
 const createSkill = async (req, res) => {
-  let skill = await Skill.create({
+  const skill = await Skill.create({
     ...req.body,
-    portfolio: req.user.portfolio,
+    portfolio_id: req.user.portfolio.id,
   });
-
-  await Portfolio.findByIdAndUpdate(
-    skill.portfolio,
-    {
-      $push: { skills: skill._id },
-    },
-    { new: true }
-  );
 
   res.send(skill);
 };
 
 const updateSkill = async (req, res) => {
-  let skill = await Skill.findOne({
-    _id: req.params.id,
-    portfolio: req.user.portfolio,
+  const skill = await Skill.findOne({
+    where: {
+      id: req.params.id,
+      portfolio_id: req.user.portfolio.id,
+    },
   });
 
   if (!skill) {
     throw new ApiError(status.NOT_FOUND, "Skill not found");
   }
 
-  Object.assign(skill, req.body);
-  await skill.save();
+  await skill.update(req.body);
 
   res.send(skill);
 };
 
 const deleteSkill = async (req, res) => {
-  let skill = await Skill.findOne({
-    _id: req.params.id,
-    portfolio: req.user.portfolio,
+  const skill = await Skill.findOne({
+    where: {
+      id: req.params.id,
+      portfolio_id: req.user.portfolio.id,
+    },
   });
 
   if (!skill) {
     throw new ApiError(status.NOT_FOUND, "Skill not found");
   }
 
-  await skill.deleteOne();
+  await skill.destroy();
 
   res.send(skill);
 };

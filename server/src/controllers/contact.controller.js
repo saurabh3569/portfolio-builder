@@ -1,14 +1,14 @@
-const Contact = require("../models/contact.model");
-const Portfolio = require("../models/portfolio.model");
-const User = require("../models/user.model");
+const { Contact, Portfolio, User } = require("../models");
 const ApiError = require("../utils/ApiError");
 const { status } = require("http-status");
 const { sendToQueue } = require("../utils/rabbitmq");
 
 const getContact = async (req, res) => {
   const contact = await Contact.findOne({
-    _id: req.params.id,
-    user: req.user._id,
+    where: {
+      id: req.params.id,
+      user_id: req.user.id,
+    },
   });
 
   if (!contact) {
@@ -19,30 +19,31 @@ const getContact = async (req, res) => {
 };
 
 const listContact = async (req, res) => {
-  const contacts = await Contact.find({ user: req.user._id });
+  const contacts = await Contact.findAll({
+    where: {
+      user_id: req.user.id,
+    },
+  });
 
   res.send(contacts);
 };
 
 const createContact = async (req, res) => {
-  const user = await User.findOne({ _id: req.body.userId });
+  const user = await User.findByPk(req.body.userId);
 
   if (!user) {
     throw new ApiError(status.NOT_FOUND, "User not found");
   }
 
-  let contact = new Contact({ ...req.body, user: req.body.userId });
+  const contact = await Contact.create({
+    email: req.body.email,
+    name: req.body.name,
+    message: req.body.message,
+    user_id: req.body.userId,
+    portfolio_id: req.body.portfolioId,
+  });
 
-  await contact.save();
-
-  await Portfolio.findByIdAndUpdate(
-    contact.portfolio,
-    {
-      $push: { contacts: contact._id },
-    },
-    { new: true }
-  );
-
+  // Send to queue
   await sendToQueue({
     subject: `New message from ${req.body.name}`,
     name: req.body.name,
@@ -55,16 +56,18 @@ const createContact = async (req, res) => {
 };
 
 const deleteContact = async (req, res) => {
-  let contact = await Contact.findOne({
-    _id: req.params.id,
-    user: req.user._id,
+  const contact = await Contact.findOne({
+    where: {
+      id: req.params.id,
+      user_id: req.user.id,
+    },
   });
 
   if (!contact) {
     throw new ApiError(status.NOT_FOUND, "Contact not found");
   }
 
-  await contact.deleteOne();
+  await contact.destroy();
 
   res.send(contact);
 };
