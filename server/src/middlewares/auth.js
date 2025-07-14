@@ -3,6 +3,7 @@ const { status } = require("http-status");
 const ApiError = require("../utils/ApiError");
 const { User, Portfolio } = require("../models");
 const { env } = require("../config/env");
+const updatePortfolioCache = require("../utils/updatePortfolioCache");
 
 const auth = () => async (req, res, next) => {
   try {
@@ -21,6 +22,10 @@ const auth = () => async (req, res, next) => {
     if (!user) {
       throw new ApiError(status.NOT_FOUND, "User not found!");
     }
+
+    res.on("finish", async () => {
+      await updatePortfolioCache(req, user);
+    });
 
     req.user = user;
 

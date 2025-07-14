@@ -9,7 +9,7 @@ module.exports = {
     port: parseInt(env.DB_PORT, 10),
     dialect: "postgres",
     logging: false, // SQL logs
-    dialectOptions: {
+    dialectOptions: env.NODE_ENV === "production" && {
       ssl: {
         require: true,
         rejectUnauthorized: false,

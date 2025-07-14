@@ -19,6 +19,10 @@ const env = cleanEnv(process.env, {
   DB_NAME: str({ default: "portfolio-builder" }),
   DB_USER: str({ default: "postgres" }),
   DB_PASSWORD: str({ default: "postgres" }),
+  NODE_ENV: str({
+    choices: ["development", "production", "test"],
+    default: "development",
+  }),
 });
 
 module.exports = { env };
