@@ -33,10 +33,14 @@ const getPublicPortfolio = async (req, res) => {
     },
     include: [
       { model: Education, as: "educations" },
-      { model: Experience, as: "experiences", order: [["startDate", "DESC"]] },
+      { model: Experience, as: "experiences" },
       { model: Project, as: "projects" },
       { model: Skill, as: "skills" },
       { model: SocialLink, as: "socialLinks" },
+    ],
+    order: [
+      [{ model: Experience, as: "experiences" }, "startDate", "DESC"],
+      [{ model: Education, as: "educations" }, "startDate", "DESC"],
     ],
   });
 
@@ -63,6 +67,10 @@ const getUserPortfolio = async (req, res) => {
       { model: Project, as: "projects" },
       { model: Skill, as: "skills" },
       { model: SocialLink, as: "socialLinks" },
+    ],
+    order: [
+      [{ model: Experience, as: "experiences" }, "startDate", "DESC"],
+      [{ model: Education, as: "educations" }, "startDate", "DESC"],
     ],
   });
 
