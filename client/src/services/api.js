@@ -120,7 +120,8 @@ export const updateProject = (data) => {
     name: data.name,
     description: data.description,
     technologies: data.technologies,
-    links: data.links,
+    liveLink: data.liveLink,
+    sourceCodeLink: data.sourceCodeLink,
   });
 };
 
