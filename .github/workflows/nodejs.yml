@@ -1,4 +1,4 @@
-name: Deploy Node.js App to Render
+name: Deploy Node.js App
 
 on:
   push:
@@ -25,31 +25,9 @@ jobs:
       - name: 📦 Install dependencies
         run: yarn install --frozen-lockfile
 
-      # Debug step to verify secret is available (will show length but not value)
-      - name: 🔍 Verify Render Hook Secret
-        run: |
-          if [ -z "$RENDER_DEPLOY_HOOK" ]; then
-            echo "::warning::RENDER_DEPLOY_HOOK secret appears to be empty"
-            echo "Secret length: 0"
-          else
-            echo "Secret length: ${#RENDER_DEPLOY_HOOK}"
-          fi
-        env:
-          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+      # - name: 🐳 Optional: Build Docker image (if needed)
+      #   if: ${{ false }}
+      #   run: docker build -t portfolio-builder .
 
-      # Main deployment trigger
       - name: 🚀 Trigger Render Deploy
-        env:
-          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
-        run: |
-          if [ -z "$RENDER_DEPLOY_HOOK" ]; then
-            echo "::error::Render deploy hook URL is empty!"
-            exit 1
-          fi
-
-          echo "Triggering Render deployment..."
-          curl -X POST \
-            -H "Accept: application/json" \
-            "$RENDER_DEPLOY_HOOK"
-
-          echo "Deployment trigger completed."
+        run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
