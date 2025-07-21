@@ -208,7 +208,3 @@ This project uses GitHub Actions to trigger deployment on Render when code is me
 - Trigger: `push` to `main`
 - Action: Calls Render deploy hook using secret `RENDER_DEPLOY_HOOK`
 - Note: Auto deploy in Render is disabled to avoid double deployment
-
-## License
-
-This project is licensed under the **MIT License**.
