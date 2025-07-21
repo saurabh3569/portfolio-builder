@@ -18,10 +18,6 @@ function ProjectsManager({
     setNewProject((prev) => ({
       ...prev,
       [name]: value,
-      links: {
-        ...prev.links,
-        ...(name === "live" || name === "sourceCode" ? { [name]: value } : {}),
-      },
     }));
   };
 
@@ -30,10 +26,6 @@ function ProjectsManager({
     setEditingProject((prev) => ({
       ...prev,
       [name]: value,
-      links: {
-        ...prev.links,
-        ...(name === "live" || name === "sourceCode" ? { [name]: value } : {}),
-      },
     }));
   };
 
@@ -133,11 +125,11 @@ function ProjectsManager({
                   type="url"
                   className="form-control"
                   id="projLiveLink"
-                  name="live"
+                  name="liveLink"
                   value={
                     editingProject
-                      ? editingProject.links?.live || ""
-                      : newProject.links?.live || ""
+                      ? editingProject.liveLink
+                      : newProject.liveLink
                   }
                   onChange={
                     editingProject
@@ -156,11 +148,11 @@ function ProjectsManager({
                   type="url"
                   className="form-control"
                   id="projSourceCode"
-                  name="sourceCode"
+                  name="sourceCodeLink"
                   value={
                     editingProject
-                      ? editingProject.links?.sourceCode || ""
-                      : newProject.links?.sourceCode || ""
+                      ? editingProject.sourceCodeLink
+                      : newProject.sourceCodeLink
                   }
                   onChange={
                     editingProject
@@ -214,9 +206,9 @@ function ProjectsManager({
                 )}
                 {/* Display Links */}
                 <div className="project-links">
-                  {proj.links?.live && (
+                  {proj?.liveLink && (
                     <a
-                      href={proj.links.live}
+                      href={proj.liveLink}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="btn btn-outline-primary btn-sm me-2"
@@ -224,9 +216,9 @@ function ProjectsManager({
                       Live Demo
                     </a>
                   )}
-                  {proj.links?.sourceCode && (
+                  {proj?.sourceCodeLink && (
                     <a
-                      href={proj.links.sourceCode}
+                      href={proj.sourceCodeLink}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="btn btn-outline-secondary btn-sm"
