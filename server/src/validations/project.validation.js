@@ -7,10 +7,8 @@ const createProject = {
     startDate: Joi.date(),
     endDate: Joi.date().allow(null),
     technologies: Joi.array().items(Joi.string()),
-    links: Joi.object({
-      live: Joi.string().uri().allow(null, ""),
-      sourceCode: Joi.string().uri().allow(null, ""),
-    }).allow(null),
+    liveLink: Joi.string().uri().allow(null, ""),
+    sourceCodeLink: Joi.string().uri().allow(null, ""),
   }),
 };
 
@@ -21,10 +19,8 @@ const updateProject = {
     startDate: Joi.date(),
     endDate: Joi.date().allow(null),
     technologies: Joi.array().items(Joi.string()),
-    links: Joi.object({
-      live: Joi.string().uri().allow(null, ""),
-      sourceCode: Joi.string().uri().allow(null, ""),
-    }).allow(null),
+    liveLink: Joi.string().uri().allow(null, ""),
+    sourceCodeLink: Joi.string().uri().allow(null, ""),
   }),
 };
 
