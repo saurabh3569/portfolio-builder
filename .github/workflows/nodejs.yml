@@ -25,7 +25,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: 🐳 Optional: Build Docker image (if needed)
-        if: false
+        if: ${{ false }}
         run: docker build -t portfolio-builder .
 
       - name: 🚀 Trigger Render Deploy
