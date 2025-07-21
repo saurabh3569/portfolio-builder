@@ -1,0 +1,29 @@
+name: Deploy Node.js App 
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  install-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🛎️ Checkout code
+        uses: actions/checkout@v3
+
+      - name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.17.0
+          cache: 'yarn'
+
+      - name: 📦 Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: 🐳 Optional: Build Docker image (if needed)
+        if: false
+        run: docker build -t portfolio-builder .
+
+      - name: 🚀 Trigger Render Deploy
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
