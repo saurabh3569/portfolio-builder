@@ -200,6 +200,15 @@ To deploy the application:
 - **Frontend:** Deploy using **Vercel, Netlify, or any hosting service**.
 - **Environment Variables:** Configure variables correctly for production.
 
+## CI/CD with GitHub Actions
+
+This project uses GitHub Actions to trigger deployment on Render when code is merged into the `main` branch.
+
+- Workflow file: `.github/workflows/nodejs.yml`
+- Trigger: `push` to `main`
+- Action: Calls Render deploy hook using secret `RENDER_DEPLOY_HOOK`
+- Note: Auto deploy in Render is disabled to avoid double deployment
+
 ## License
 
 This project is licensed under the **MIT License**.
