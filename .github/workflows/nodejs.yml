@@ -14,41 +14,20 @@ jobs:
     steps:
       - name: 🛎️ Checkout code
         uses: actions/checkout@v3
+
       - name: ⚙️ Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "20.17.0"
           cache: "yarn"
           cache-dependency-path: "./server/yarn.lock"
+
       - name: 📦 Install dependencies
         run: yarn install --frozen-lockfile
-      - name: 🐳 Optional: Build Docker image (if needed)
-        if: ${{ false }}
-        run: docker build -t portfolio-builder .
-      - name: 🔍 Debug: Check secrets and environment
-        run: |
-          echo "🔍 Debugging secrets and environment..."
-          echo "Repository: ${{ github.repository }}"
-          echo "Branch: ${{ github.ref }}"
-          echo "Event: ${{ github.event_name }}"
-          echo "Actor: ${{ github.actor }}"
-          echo "Secret exists: ${{ secrets.RENDER_DEPLOY_HOOK != '' }}"
-          echo "Secret length: ${{ secrets.RENDER_DEPLOY_HOOK && 'SET' || 'EMPTY' }}"
-          
+
+      # - name: 🐳 Optional: Build Docker image (if needed)
+      #   if: ${{ false }}
+      #   run: docker build -t portfolio-builder .
+
       - name: 🚀 Trigger Render Deploy
-        env:
-          DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
-        run: |
-          if [ -z "$DEPLOY_HOOK" ]; then
-            echo "❌ Error: RENDER_DEPLOY_HOOK secret is not set"
-            echo "Please add your Render deploy hook URL to repository secrets"
-            exit 1
-          fi
-          echo "🚀 Triggering Render deployment..."
-          curl -X POST "$DEPLOY_HOOK" -f --retry 3 --retry-delay 5
-          if [ $? -eq 0 ]; then
-            echo "✅ Deployment triggered successfully"
-          else
-            echo "❌ Deployment trigger failed"
-            exit 1
-          fi
+        run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
