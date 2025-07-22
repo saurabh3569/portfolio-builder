@@ -1,4 +1,4 @@
-# PERN Stack Portfolio Project
+# PERN Stack Portfolio Manager
 
 ## Introduction
 
