@@ -15,7 +15,7 @@ const getContact = async (req, res) => {
     throw new ApiError(status.NOT_FOUND, "Contact not found");
   }
 
-  res.send(contact);
+  return res.json(contact);
 };
 
 const listContact = async (req, res) => {
@@ -25,7 +25,7 @@ const listContact = async (req, res) => {
     },
   });
 
-  res.send(contacts);
+  return res.json(contacts);
 };
 
 const createContact = async (req, res) => {
@@ -52,7 +52,7 @@ const createContact = async (req, res) => {
     to: user.email,
   });
 
-  res.send(contact);
+  return res.json(contact);
 };
 
 const deleteContact = async (req, res) => {
@@ -69,7 +69,7 @@ const deleteContact = async (req, res) => {
 
   await contact.destroy();
 
-  res.send(contact);
+  return res.json(contact);
 };
 
 module.exports = {

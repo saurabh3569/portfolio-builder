@@ -14,7 +14,7 @@ const getExperience = async (req, res) => {
     throw new ApiError(status.NOT_FOUND, "Experience not found");
   }
 
-  res.send(experience);
+  return res.json(experience);
 };
 
 const listExperience = async (req, res) => {
@@ -24,7 +24,7 @@ const listExperience = async (req, res) => {
     },
   });
 
-  res.send(experiences);
+  return res.json(experiences);
 };
 
 const createExperience = async (req, res) => {
@@ -33,7 +33,7 @@ const createExperience = async (req, res) => {
     portfolio_id: req.user.portfolio.id,
   });
 
-  res.send(experience);
+  return res.json(experience);
 };
 
 const updateExperience = async (req, res) => {
@@ -50,7 +50,7 @@ const updateExperience = async (req, res) => {
 
   await experience.update(req.body);
 
-  res.send(experience);
+  return res.json(experience);
 };
 
 const deleteExperience = async (req, res) => {
@@ -67,7 +67,7 @@ const deleteExperience = async (req, res) => {
 
   await experience.destroy();
 
-  res.send(experience);
+  return res.json(experience);
 };
 
 module.exports = {

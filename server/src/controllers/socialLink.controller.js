@@ -14,7 +14,7 @@ const getSocialLink = async (req, res) => {
     throw new ApiError(status.NOT_FOUND, "SocialLink not found");
   }
 
-  res.send(socialLink);
+  return res.json(socialLink);
 };
 
 const listSocialLink = async (req, res) => {
@@ -24,7 +24,7 @@ const listSocialLink = async (req, res) => {
     },
   });
 
-  res.send(socialLinks);
+  return res.json(socialLinks);
 };
 
 const createSocialLink = async (req, res) => {
@@ -33,7 +33,7 @@ const createSocialLink = async (req, res) => {
     portfolio_id: req.user.portfolio.id,
   });
 
-  res.send(socialLink);
+  return res.json(socialLink);
 };
 
 const updateSocialLink = async (req, res) => {
@@ -50,7 +50,7 @@ const updateSocialLink = async (req, res) => {
 
   await socialLink.update(req.body);
 
-  res.send(socialLink);
+  return res.json(socialLink);
 };
 
 const deleteSocialLink = async (req, res) => {
@@ -67,7 +67,7 @@ const deleteSocialLink = async (req, res) => {
 
   await socialLink.destroy();
 
-  res.send(socialLink);
+  return res.json(socialLink);
 };
 
 module.exports = {

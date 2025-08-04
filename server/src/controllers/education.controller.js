@@ -14,7 +14,7 @@ const getEducation = async (req, res) => {
     throw new ApiError(status.NOT_FOUND, "Education not found");
   }
 
-  res.send(education);
+  return res.json(education);
 };
 
 const listEducation = async (req, res) => {
@@ -24,7 +24,7 @@ const listEducation = async (req, res) => {
     },
   });
 
-  res.send(educations);
+  return res.json(educations);
 };
 
 const createEducation = async (req, res) => {
@@ -33,7 +33,7 @@ const createEducation = async (req, res) => {
     portfolio_id: req.user.portfolio.id,
   });
 
-  res.send(education);
+  return res.json(education);
 };
 
 const updateEducation = async (req, res) => {
@@ -50,7 +50,7 @@ const updateEducation = async (req, res) => {
 
   await education.update(req.body);
 
-  res.send(education);
+  return res.json(education);
 };
 
 const deleteEducation = async (req, res) => {
@@ -67,7 +67,7 @@ const deleteEducation = async (req, res) => {
 
   await education.destroy();
 
-  res.send(education);
+  return res.json(education);
 };
 
 module.exports = {

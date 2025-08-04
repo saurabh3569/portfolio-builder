@@ -14,7 +14,7 @@ const getProject = async (req, res) => {
     throw new ApiError(status.NOT_FOUND, "Project not found");
   }
 
-  res.send(project);
+  return res.json(project);
 };
 
 const listProject = async (req, res) => {
@@ -24,7 +24,7 @@ const listProject = async (req, res) => {
     },
   });
 
-  res.send(projects);
+  return res.json(projects);
 };
 
 const createProject = async (req, res) => {
@@ -33,7 +33,7 @@ const createProject = async (req, res) => {
     portfolio_id: req.user.portfolio.id,
   });
 
-  res.send(project);
+  return res.json(project);
 };
 
 const updateProject = async (req, res) => {
@@ -50,7 +50,7 @@ const updateProject = async (req, res) => {
 
   await project.update(req.body);
 
-  res.send(project);
+  return res.json(project);
 };
 
 const deleteProject = async (req, res) => {
@@ -67,7 +67,7 @@ const deleteProject = async (req, res) => {
 
   await project.destroy();
 
-  res.send(project);
+  return res.json(project);
 };
 
 module.exports = {

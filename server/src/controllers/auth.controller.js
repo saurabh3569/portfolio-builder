@@ -54,7 +54,7 @@ const register = async (req, res) => {
     expiresIn: `${env.JWT_ACCESS_EXPIRATION_MINUTES}m`,
   });
 
-  res.send({ user: userObj, token });
+  return res.json({ user: userObj, token });
 };
 
 const login = async (req, res) => {
@@ -73,7 +73,7 @@ const login = async (req, res) => {
     expiresIn: `${env.JWT_ACCESS_EXPIRATION_MINUTES}m`,
   });
 
-  res.send({ user: userObj, token });
+  return res.json({ user: userObj, token });
 };
 
 module.exports = { register, login };

@@ -53,7 +53,7 @@ const updateUser = async (req, res) => {
   const updatedUser = user.toJSON();
   delete updatedUser.password;
 
-  res.send({ user: updatedUser });
+  return res.json({ user: updatedUser });
 };
 
 const deleteUser = async (req, res) => {
@@ -69,7 +69,7 @@ const deleteUser = async (req, res) => {
   const userObj = user.toJSON();
   delete userObj.password;
 
-  res.send({ user: userObj });
+  return res.json({ user: userObj });
 };
 
 module.exports = { updateUser, deleteUser };

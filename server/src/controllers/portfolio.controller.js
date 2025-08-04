@@ -17,7 +17,7 @@ const getPublicPortfolio = async (req, res) => {
   const cachedPortfolio = await redis.get(username);
 
   if (cachedPortfolio) {
-    return res.send(JSON.parse(cachedPortfolio));
+    return res.json(JSON.parse(cachedPortfolio));
   }
 
   const user = await User.findOne({ where: { username } });
@@ -52,7 +52,7 @@ const getPublicPortfolio = async (req, res) => {
 
   await redis.set(user.username, JSON.stringify(portfolio), "EX", 60 * 60); // 1 hour
 
-  res.send(portfolio);
+  return res.json(portfolio);
 };
 
 const getUserPortfolio = async (req, res) => {
@@ -78,7 +78,7 @@ const getUserPortfolio = async (req, res) => {
     throw new ApiError(status.NOT_FOUND, "Portfolio not found");
   }
 
-  res.send(portfolio);
+  return res.json(portfolio);
 };
 
 const updatePortfolio = async (req, res) => {
@@ -99,7 +99,7 @@ const updatePortfolio = async (req, res) => {
     await portfolio.update(req.body);
   }
 
-  res.send(portfolio);
+  return res.json(portfolio);
 };
 
 const updatePortfolioVisibility = async (req, res) => {
@@ -122,7 +122,7 @@ const updatePortfolioVisibility = async (req, res) => {
 
   await redis.del(portfolio.user.username);
 
-  res.send(portfolio);
+  return res.json(portfolio);
 };
 
 module.exports = {
