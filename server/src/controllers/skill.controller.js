@@ -14,7 +14,7 @@ const getSkill = async (req, res) => {
     throw new ApiError(status.NOT_FOUND, "Skill not found");
   }
 
-  res.send(skill);
+  return res.json(skill);
 };
 
 const listSkill = async (req, res) => {
@@ -24,7 +24,7 @@ const listSkill = async (req, res) => {
     },
   });
 
-  res.send(skills);
+  return res.json(skills);
 };
 
 const createSkill = async (req, res) => {
@@ -33,7 +33,7 @@ const createSkill = async (req, res) => {
     portfolio_id: req.user.portfolio.id,
   });
 
-  res.send(skill);
+  return res.json(skill);
 };
 
 const updateSkill = async (req, res) => {
@@ -50,7 +50,7 @@ const updateSkill = async (req, res) => {
 
   await skill.update(req.body);
 
-  res.send(skill);
+  return res.json(skill);
 };
 
 const deleteSkill = async (req, res) => {
@@ -67,7 +67,7 @@ const deleteSkill = async (req, res) => {
 
   await skill.destroy();
 
-  res.send(skill);
+  return res.json(skill);
 };
 
 module.exports = {
