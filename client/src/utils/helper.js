@@ -4,7 +4,7 @@ export const getDurationSummary = (start, end) => {
   // if (!end) return "";
 
   const startDate = moment(start);
-  const endDate = moment(end);
+  const endDate = end ? moment(end) : moment();
 
   const totalMonths = endDate.diff(startDate, "months");
 
