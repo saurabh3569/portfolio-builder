@@ -1,7 +1,7 @@
 import moment from "moment";
 
 export const getDurationSummary = (start, end) => {
-  if (!end) return "";
+  // if (!end) return "";
 
   const startDate = moment(start);
   const endDate = moment(end);
