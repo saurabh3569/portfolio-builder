@@ -13,6 +13,7 @@ import "aos/dist/aos.css";
 import "./css/Portfolio.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRef } from "react";
+import "./css/Loader.css";
 
 function Portfolio() {
   const { username } = useParams();
@@ -70,7 +71,12 @@ function Portfolio() {
   };
 
   if (!portfolio)
-    return <div className="text-center mt-5 text-light">Loading...</div>;
+    return (
+      <div className="loader-overlay">
+        <div className="loader"></div>
+        <p className="text-light mt-4 fs-5">Loading Portfolio...</p>
+      </div>
+    );
 
   return (
     <div className="portfolio-container">

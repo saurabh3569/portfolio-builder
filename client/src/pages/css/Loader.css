@@ -1,0 +1,43 @@
+.loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.95); /* dark black background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 9999;
+}
+
+.loader {
+  width: 80px;      
+  aspect-ratio: 1;
+  position: relative;
+  overflow: hidden;
+  border: 3px solid #fff; 
+}
+
+.loader::before {
+  content: "";
+  position: absolute;
+  inset: -70px; 
+  --c: conic-gradient(from 180deg at 50% calc(100% - 3px), #fff 90deg, #0000 0);
+  background: var(--c), var(--c);
+  background-position: 0 0, 12px 0;
+  background-size: 24px 14px;
+  animation: l16 2s infinite linear;
+}
+
+@keyframes l16 {
+  50% {
+    background-position: 0 -14px, 12px 14px;
+    transform: rotate(90deg);
+  }
+  100% {
+    background-position: 0 -28px, 12px 28px;
+    transform: rotate(180deg);
+  }
+}
