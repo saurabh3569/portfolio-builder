@@ -1,52 +1,65 @@
 const fs = require("fs").promises;
-const AWS = require("aws-sdk");
+const {
+  S3Client,
+  PutObjectCommand,
+  DeleteObjectCommand,
+} = require("@aws-sdk/client-s3");
 const { env } = require("../config/env.js");
 
-const s3 = new AWS.S3({
-  accessKeyId: env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: env.AWS_SECRET_ACCESS_KEY,
+const s3Client = new S3Client({
   region: env.AWS_REGION,
+  credentials: {
+    accessKeyId: env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: env.AWS_SECRET_ACCESS_KEY,
+  },
 });
+
+const getKeyFromUrl = (url) => {
+  const urlObj = new URL(url);
+  return urlObj.pathname.substring(1); // remove leading '/'
+};
 
 const s3Service = {
   uploadFileToS3: async (file, next) => {
     try {
-      // Read file async
+      // Read local file
       const fileContent = await fs.readFile(file.path);
 
-      const params = {
-        Bucket: env.AWS_BUCKET_NAME,
-        Key: `${Date.now()}-${file.originalname}`,
-        Body: fileContent,
-        ContentType: file.mimetype,
-        ACL: "public-read",
-      };
+      const fileKey = `${Date.now()}-${file.originalname}`;
 
       // Upload to S3
-      const data = await s3.upload(params).promise();
+      await s3Client.send(
+        new PutObjectCommand({
+          Bucket: env.AWS_BUCKET_NAME,
+          Key: fileKey,
+          Body: fileContent,
+          ContentType: file.mimetype,
+          ACL: "public-read",
+        })
+      );
 
-      // Delete temp file async
+      // Delete temp local file
       await fs.unlink(file.path);
 
-      return data.Location; // S3 file URL
+      // Return public URL
+      return `https://${env.AWS_BUCKET_NAME}.s3.${env.AWS_REGION}.amazonaws.com/${fileKey}`;
     } catch (err) {
       next(err);
     }
   },
+
   deleteFileFromS3: async (fileUrl) => {
     try {
       if (!fileUrl) return;
 
-      const urlObj = new URL(fileUrl);
+      const Key = getKeyFromUrl(fileUrl);
 
-      const Key = urlObj.pathname.substring(1);
-
-      await s3
-        .deleteObject({
+      await s3Client.send(
+        new DeleteObjectCommand({
           Bucket: env.AWS_BUCKET_NAME,
           Key,
         })
-        .promise();
+      );
     } catch (error) {
       console.error("Error deleting file from S3:", error);
     }
