@@ -131,20 +131,6 @@ function ProfileManager({
                       required
                     />
                   </div>
-                  <div className="col-md-6 col-12 mb-3">
-                    <label htmlFor="profileResume" className="form-label">
-                      Resume URL
-                    </label>
-                    <input
-                      type="url"
-                      className="form-control"
-                      id="profileResume"
-                      name="resume"
-                      value={editingProfile.resume}
-                      onChange={handleProfileChange}
-                      placeholder="Enter resume URL"
-                    />
-                  </div>
                   <div className="col-12 mb-3">
                     <label htmlFor="profileSummary" className="form-label">
                       Summary

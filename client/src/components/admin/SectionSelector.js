@@ -14,6 +14,13 @@ function SectionSelector({ setActiveSection }) {
         </li>
         <li
           className="list-group-item list-group-item-action"
+          onClick={() => setActiveSection("resume")}
+          style={{ cursor: "pointer" }}
+        >
+          Resume
+        </li>
+        <li
+          className="list-group-item list-group-item-action"
           onClick={() => setActiveSection("skills")}
           style={{ cursor: "pointer" }}
         >

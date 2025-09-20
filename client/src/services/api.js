@@ -34,7 +34,17 @@ export const updatePortfolioVisibility = (data) =>
 export const updatePortfolio = (data) => {
   return api.put(`/portfolio`, {
     summary: data.summary,
-    resume: data.resume,
+  });
+};
+
+export const uploadResume = (file) => {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  return api.post(`/portfolio/resume`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
   });
 };
 
