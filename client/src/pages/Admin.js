@@ -35,6 +35,7 @@ import EducationManager from "../components/admin/EducationManager";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import "./css/Admin.css";
+import ResumeManager from "../components/admin/ResumeManager";
 
 function Admin() {
   const [portfolio, setPortfolio] = useState(null);
@@ -80,6 +81,7 @@ function Admin() {
   });
   const [editingEducation, setEditingEducation] = useState(null);
   const [profileVisibility, setProfileVisibility] = useState();
+  const [resumeUrl, setResumeUrl] = useState(profile.resume);
 
   const navigate = useNavigate();
 
@@ -572,6 +574,9 @@ function Admin() {
             editingProfile={editingProfile}
             setEditingProfile={setEditingProfile}
           />
+        )}
+        {activeSection === "resume" && (
+          <ResumeManager resumeUrl={resumeUrl} setResumeUrl={setResumeUrl} />
         )}
         {activeSection === "skills" && (
           <SkillsManager
