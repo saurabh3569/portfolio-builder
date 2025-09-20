@@ -10,6 +10,7 @@ const {
 const ApiError = require("../utils/ApiError");
 const { status } = require("http-status");
 const redis = require("../config/redis");
+const { s3Service } = require("../services/s3.service");
 
 const getPublicPortfolio = async (req, res) => {
   const username = req.params.username;
@@ -88,8 +89,6 @@ const updatePortfolio = async (req, res) => {
     where: { user_id: userId },
   });
 
-  console.log(req.body);
-
   if (!portfolio) {
     portfolio = await Portfolio.create({
       user_id: userId,
@@ -125,9 +124,42 @@ const updatePortfolioVisibility = async (req, res) => {
   return res.json(portfolio);
 };
 
+const uploadResume = async (req, res, next) => {
+  if (!req.file) {
+    throw new ApiError(status.BAD_REQUEST, "No file uploaded");
+  }
+
+  try {
+    const userId = req.user.id;
+
+    const portfolio = await Portfolio.findOne({
+      where: { user_id: userId },
+      attributes: ["id", "resume"],
+    });
+
+    if (!portfolio) {
+      throw new ApiError(status.NOT_FOUND, "Portfolio not found");
+    }
+
+    if (portfolio.resume) {
+      await s3Service.deleteFileFromS3(portfolio.resume);
+    }
+
+    const resumeUrl = await s3Service.uploadFileToS3(req.file, next);
+
+    portfolio.resume = resumeUrl;
+    await portfolio.save();
+
+    return res.json({ message: "Resume uploaded successfully", resumeUrl });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getPublicPortfolio,
   getUserPortfolio,
   updatePortfolio,
   updatePortfolioVisibility,
+  uploadResume,
 };
