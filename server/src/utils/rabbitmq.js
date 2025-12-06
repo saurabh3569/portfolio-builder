@@ -10,7 +10,7 @@ const connectQueue = async () => {
   try {
     connection = await amqplib.connect(env.RABBITMQ_URL);
     channel = await connection.createChannel();
-    await channel.assertQueue("email-queue");
+    await channel.assertQueue("email-queue", { durable: true });
     console.log("RabbitMQ Connected and Channel Ready");
   } catch (error) {
     console.error("RabbitMQ connection error:", error);
@@ -24,7 +24,9 @@ const sendToQueue = async (data) => {
       "RabbitMQ channel not initialized. Call connectQueue() first."
     );
   }
-  channel.sendToQueue("email-queue", Buffer.from(JSON.stringify(data)));
+  channel.sendToQueue("email-queue", Buffer.from(JSON.stringify(data)), {
+    persistent: true,
+  });
 };
 
 const consumeQueue = (callback) => {
