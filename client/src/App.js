@@ -15,6 +15,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/portfolio" element={<Portfolio />} />
         <Route path="/portfolio/:username" element={<Portfolio />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/*" element={<NoPortfolioFound />} />
