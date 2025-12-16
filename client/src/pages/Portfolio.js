@@ -16,7 +16,7 @@ import { useRef } from "react";
 import "./css/Loader.css";
 
 function Portfolio() {
-  const { username } = useParams();
+  const { username = "saurabh" } = useParams();
   const navigate = useNavigate();
 
   const [portfolio, setPortfolio] = useState(null);
